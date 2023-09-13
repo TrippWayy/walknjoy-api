@@ -9,7 +9,7 @@ const {
   getHotels,
   updateHotel,
 } = require("../controllers/hotel.js");
-import {verifyAdmin} from "../utils/verifyToken.js"
+const {verifyAdmin} = require("../utils/verifyToken")
 
 //CREATE
 router.post("/", verifyAdmin, createHotel);

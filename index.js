@@ -4,12 +4,15 @@ const dotenv = require("dotenv");
 const mongoose = require("mongoose");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
+const axios = require("axios");
 
 // Import routes
 const authRoute = require("./src/routes/auth")
 const usersRoute = require("./src/routes/users")
 const hotelsRoute = require("./src/routes/hotels")
 const roomsRoute = require("./src/routes/rooms")
+const toursRoute = require("./src/routes/tours")
+const tourCompanies = require("./src/routes/tourCompanies")
 
 const app = express()
 dotenv.config()
@@ -35,6 +38,8 @@ app.use("/api/auth", authRoute)
 app.use("/api/users", usersRoute)
 app.use("/api/hotels", hotelsRoute);
 app.use("/api/rooms", roomsRoute);
+app.use("/api/tours", toursRoute);
+app.use("/api/tourCompanies", tourCompanies)
 
 // Middleware for possible errors
 app.use((err, req, res, next) => {
@@ -48,8 +53,9 @@ app.use((err, req, res, next) => {
   });
 });
 
+
 const PORT = process.env.PORT
-app.listen(PORT, ()=>{
+app.listen(PORT, async ()=>{
     connect();
     console.log("Connected to backend")
 })
