@@ -2,6 +2,7 @@ const Tour = require("../model/Tour");
 const TourCompany = require("../model/TourCompany");
 const Room = require("../model/Room");
 const Hotel = require("../model/Hotel");
+
 const createTour = async (req, res, next)=>{
       const companyId = req.params.companyid;
       const newTour = new Tour(req.body);
