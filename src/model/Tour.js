@@ -46,7 +46,7 @@ const TourSchema = new mongoose.Schema({
         type: Boolean,
         required: true
     },
-    tourNumbers: [{number: Number, unavailableDates: {type: [Date]}}]
+    placeCount: [{number: Number, unavailableDates: {type: [Date]}}]
 }, {timestamps: true, collection: "Tours"})
 
 const Tour = mongoose.model("Tour", TourSchema)
