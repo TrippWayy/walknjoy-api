@@ -9,6 +9,10 @@ const RoomSchema = new mongoose.Schema(
       type: Number,
       required: true,
     },
+      percent: {
+        type: Number,
+          default: 0
+      },
     maxPeople: {
       type: Number,
       required: true,
