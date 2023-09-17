@@ -26,6 +26,10 @@ const TourSchema = new mongoose.Schema({
         type: Number,
         required: true
     },
+    percent: {
+        type: Number,
+        default: 0
+    },
     category: {
         type: String,
         required: true
