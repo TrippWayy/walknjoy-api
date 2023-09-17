@@ -1,17 +1,17 @@
-const {verifyUser, verifyAdmin, verifyToken} = require("../utils/verifyToken");
+const {checkLogin, checkAdmin} = require("../utils/verifyToken");
 const router = require("express").Router();
 const {updateUser, deleteUser, getUser, getUsers} = require("../controllers/user")
 
 //UPDATE
-router.put("/:id", verifyUser, updateUser);
+router.put("/:id", checkLogin, updateUser);
 
 //DELETE
-router.delete("/:id", verifyUser, deleteUser);
+router.delete("/:id", checkLogin, deleteUser);
 
 //GET
-router.get("/:id", verifyUser, getUser);
+router.get("/:id", checkLogin, getUser);
 
 //GET ALL
-router.get("/", verifyAdmin, getUsers);
+router.get("/", checkAdmin, getUsers);
 
 module.exports = router;

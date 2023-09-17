@@ -9,14 +9,14 @@ const {
   getHotels,
   updateHotel,
 } = require("../controllers/hotel.js");
-const {verifyAdmin} = require("../utils/verifyToken")
+const {checkAdmin} = require("../utils/verifyToken")
 
 //CREATE
-router.post("/", verifyAdmin, createHotel);
+router.post("/", checkAdmin, createHotel);
 //UPDATE
-router.put("/:id", verifyAdmin, updateHotel);
+router.put("/:id", checkAdmin, updateHotel);
 //DELETE
-router.delete("/:id", verifyAdmin, deleteHotel);
+router.delete("/:id", checkAdmin, deleteHotel);
 //GET
 router.get("/find/:id", getHotel);
 //GET ALL
