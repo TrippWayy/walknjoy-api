@@ -1,5 +1,5 @@
 const router = require("express").Router()
-const {verifyAdmin} = require("../utils/verifyToken")
+const {verifyAdmin, checkAdmin} = require("../utils/verifyToken")
 const {createCompany,
         updateCompany,
         deleteCompany,
@@ -8,11 +8,11 @@ const {createCompany,
         getCompanyTours} = require("../controllers/tourCompany")
 
 // CREATE
-router.post("/", verifyAdmin, createCompany)
+router.post("/", checkAdmin, createCompany)
 // UPDATE
-router.put("/:id", verifyAdmin, updateCompany)
+router.put("/:id", checkAdmin, updateCompany)
 // DELETE
-router.delete("/:id", verifyAdmin, deleteCompany)
+router.delete("/:id", checkAdmin, deleteCompany)
 // GET
 router.delete("/find/:id", getCompany)
 // GET ALL

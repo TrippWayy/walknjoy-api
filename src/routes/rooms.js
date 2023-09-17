@@ -7,15 +7,15 @@ const {
   updateRoom,
   updateRoomAvailability,
 } = require("../controllers/room");
-const { verifyAdmin } = require("../utils/verifyToken");
+const { checkAdmin } = require("../utils/verifyToken");
 
 //CREATE
-router.post("/:hotelid", verifyAdmin, createRoom);
+router.post("/:hotelid", checkAdmin, createRoom);
 //UPDATE
 router.put("/availability/:id", updateRoomAvailability);
-router.put("/:id", verifyAdmin, updateRoom);
+router.put("/:id", checkAdmin, updateRoom);
 //DELETE
-router.delete("/:id/:hotelid", verifyAdmin, deleteRoom);
+router.delete("/:id/:hotelid", checkAdmin, deleteRoom);
 //GET
 router.get("/:id", getRoom);
 //GET ALL

@@ -1,14 +1,14 @@
-const router = require("../model/Tour")
-const {verifyUser, verifyAdmin} = require("../utils/verifyToken")
+const router = require("express").Router();
+const {checkAdmin} = require("../utils/verifyToken")
 const {createTour, updateTour, deleteTour, getTour, updateTourAvailability, getTours, countByCategory, countByCity} = require("../controllers/tour")
 
 
 // CREATE
-router.post("/:companyid", verifyAdmin, createTour)
+router.post("/:companyid", checkAdmin, createTour)
 // UPDATE
-router.put("/:id", verifyAdmin, updateTour)
+router.put("/:id", checkAdmin, updateTour)
 // DELETE
-router.delete("/:id/:companyid", verifyAdmin, deleteTour)
+router.delete("/:id/:companyid", checkAdmin, deleteTour)
 router.put("/availability/:id", updateTourAvailability)
 // GET
 router.get("/:id", getTour)
