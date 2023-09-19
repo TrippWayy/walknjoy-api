@@ -69,14 +69,27 @@ const getCompanyTours = async (req, res, next)=>{
 
 const addReview = async (req, res, next)=>{
   try{
-    const review = req.body.review;
-    const tourCompany = await TourCompany.findById({_id: req.params.companyID})
-    tourCompany.reviews.push(review)
+    const reviewData = {
+      username: req.user.username,
+      image: req.user.img,
+      review: req.body.review,
+    };
+    const tourCompany = await TourCompany.findById(req.params.companyID)
+    tourCompany.reviews.push({reviewData})
     await tourCompany.save()
     res.status(200).json({message: "Review has been added successfuly!"})
   }catch (e) {
     next(e)
   }
+}
+
+const getReviews = async (req, res, next)=>{
+    try{
+        const company = await TourCompany.findById(req.params.companyID)
+        res.status(200).json({reviews: company.reviews, count: company.reviews.length})
+    }catch (e) {
+        next(e)
+    }
 }
 
 module.exports = {
@@ -86,5 +99,6 @@ module.exports = {
     getCompany,
     getCompanies,
     getCompanyTours,
-    addReview
+    addReview,
+    getReviews
 }

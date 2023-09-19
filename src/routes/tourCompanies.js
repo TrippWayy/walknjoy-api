@@ -6,7 +6,8 @@ const {createCompany,
         getCompany,
         getCompanies,
         getCompanyTours,
-        addReview} = require("../controllers/tourCompany")
+        addReview,
+        getReviews} = require("../controllers/tourCompany")
 
 // CREATE
 router.post("/", checkAdmin, createCompany)
@@ -19,6 +20,7 @@ router.delete("/find/:id", getCompany)
 // GET ALL
 router.get("/", getCompanies)
 router.get("/tour/:id", getCompanyTours)
-router.post("review/new/:companyID", checkLogin, addReview)
+router.post("/review/new/:companyID", checkLogin, addReview)
+router.get("/reviews/:companyID", getReviews)
 
 module.exports = router;
