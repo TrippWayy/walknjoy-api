@@ -8,7 +8,8 @@ const {
   getHotelRooms,
   getHotels,
   updateHotel,
-  addReview
+  addReview,
+  getReviews
 } = require("../controllers/hotel.js");
 const {checkAdmin, checkLogin} = require("../utils/verifyToken")
 
@@ -25,6 +26,8 @@ router.get("/", getHotels);
 router.get("/countByCity", countByCity);
 router.get("/countByType", countByType);
 router.get("/room/:id", getHotelRooms);
-router.get("/review/new/:hotelID", checkLogin, addReview)
+router.post("/review/new/:hotelID", checkLogin, addReview)
+router.get("/reviews/:hotelID", getReviews)
+
 
 module.exports = router;

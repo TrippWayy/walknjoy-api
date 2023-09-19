@@ -1,5 +1,6 @@
 const Hotel = require("../model/Hotel");
 const Room = require("../model/Room");
+const TourCompany = require("../model/TourCompany");
 
 const createHotel = async (req, res, next) => {
   const newHotel = new Hotel(req.body);
@@ -58,14 +59,27 @@ const getHotels = async (req, res, next) => {
 
 const addReview = async (req, res, next)=>{
   try{
-    const review = req.body.review;
-    const hotel = await Hotel.findById({_id: req.params.hotelID})
-    hotel.reviews.push(review)
+    const reviewData = {
+      username: req.user.username,
+      image: req.user.img,
+      review: req.body.review,
+    };
+    const hotel = await Hotel.findById(req.params.hotelID)
+    hotel.reviews.push({reviewData})
     await hotel.save()
     res.status(200).json({message: "Review has been added successfuly!"})
   }catch (e) {
     next(e)
   }
+}
+
+const getReviews = async (req, res, next)=>{
+    try{
+        const hotel = await Hotel.findById(req.params.hotelID)
+        res.status(200).json({reviews: hotel.reviews, count: hotel.reviews.length})
+    }catch (e) {
+        next(e)
+    }
 }
 
 const countByCity = async (req, res, next) => {
@@ -125,5 +139,6 @@ module.exports = {
     updateHotel,
     deleteHotel,
     createHotel,
-    addReview
+    addReview,
+    getReviews
 }
