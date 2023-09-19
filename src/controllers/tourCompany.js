@@ -1,5 +1,6 @@
 const TourCompany = require("../model/TourCompany")
 const Tour = require("../model/Tour")
+const Hotel = require("../model/Hotel");
 
 const createCompany = async (req, res, next)=>{
     const newCompany = new TourCompany(req.body);
@@ -66,11 +67,24 @@ const getCompanyTours = async (req, res, next)=>{
     }
 }
 
+const addReview = async (req, res, next)=>{
+  try{
+    const review = req.body.review;
+    const tourCompany = await Hotel.findById({_id: req.params.companyID})
+    tourCompany.reviews.push(review)
+    await tourCompany.save()
+    res.status(200).json({message: "Review has been added successfuly!"})
+  }catch (e) {
+    next(e)
+  }
+}
+
 module.exports = {
     createCompany,
     updateCompany,
     deleteCompany,
     getCompany,
     getCompanies,
-    getCompanyTours
+    getCompanyTours,
+    addReview
 }

@@ -47,6 +47,10 @@ const HotelSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
+  reviews: {
+    type: [String],
+    default: []
+  }
 }, {collection: "Hotels"});
 
 const Hotel =  mongoose.model("Hotel", HotelSchema)
