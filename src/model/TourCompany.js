@@ -19,6 +19,10 @@ const CompanySchema = new mongoose.Schema({
     logo: {
         type: String,
         require: true
+    },
+    reviews: {
+        type: [String],
+        default: []
     }
 }, {timestamps: true, collection: "TourCompanies"})
 

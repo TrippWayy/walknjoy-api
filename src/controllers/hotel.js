@@ -56,6 +56,18 @@ const getHotels = async (req, res, next) => {
   }
 };
 
+const addReview = async (req, res, next)=>{
+  try{
+    const review = req.body.review;
+    const hotel = await Hotel.findById({_id: req.params.hotelID})
+    hotel.reviews.push(review)
+    await hotel.save()
+    res.status(200).json({message: "Review has been added successfuly!"})
+  }catch (e) {
+    next(e)
+  }
+}
+
 const countByCity = async (req, res, next) => {
   const cities = req.query.cities.split(",");
   try {
@@ -112,5 +124,6 @@ module.exports = {
     countByCity,
     updateHotel,
     deleteHotel,
-    createHotel
+    createHotel,
+    addReview
 }

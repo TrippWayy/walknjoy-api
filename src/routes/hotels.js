@@ -8,8 +8,9 @@ const {
   getHotelRooms,
   getHotels,
   updateHotel,
+  addReview
 } = require("../controllers/hotel.js");
-const {checkAdmin} = require("../utils/verifyToken")
+const {checkAdmin, checkLogin} = require("../utils/verifyToken")
 
 //CREATE
 router.post("/", checkAdmin, createHotel);
@@ -24,5 +25,6 @@ router.get("/", getHotels);
 router.get("/countByCity", countByCity);
 router.get("/countByType", countByType);
 router.get("/room/:id", getHotelRooms);
+router.get("/review/new/:hotelID", checkLogin, addReview)
 
 module.exports = router;
