@@ -63,7 +63,7 @@ const login = async (req, res, next) => {
       }
       else {
         passport.authenticate('local', {
-            successRedirect: "/dogruYol",
+            successRedirect: "/",
             failureRedirect: "/auth/login",
             failureFlash: true,
         })(req, res, next)
@@ -73,4 +73,11 @@ const login = async (req, res, next) => {
   }
 };
 
-module.exports = {register, login}
+const logout = async (req, res, next)=>{
+    req.logout(function(err) {
+    if (err) { return next(err); }
+    res.status(200).send("User has been logged out!")
+  });
+}
+
+module.exports = {register, login, logout}
