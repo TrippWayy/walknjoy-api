@@ -11,6 +11,7 @@ const nodemailer = require("nodemailer");
 var http = require('http');
 
 require("../config/passportLocal")(passport)
+require("../config/passportGoogle")(passport)
 
 const register = async (req, res, next) => {
   try {
@@ -55,6 +56,18 @@ const register = async (req, res, next) => {
   }
 };
 
+const google = async (req, res, next)=>{
+    passport.authenticate('google', { scope: ['profile'] })
+}
+
+const googleCallback = async (req, res, next)=>{
+    passport.authenticate('google', { failureRedirect: '/login' }),
+      function(req, res) {
+        // Successful authentication, redirect home.
+        res.status(200).send("User has been authenticated!");
+      }
+}
+
 const login = async (req, res, next) => {
   try {
       const errors = validationResult(req)
@@ -80,4 +93,4 @@ const logout = async (req, res, next)=>{
   });
 }
 
-module.exports = {register, login, logout}
+module.exports = {register, google, googleCallback, login, logout}
