@@ -7,6 +7,7 @@ const cors = require("cors");
 const passport = require("passport")
 const session = require("express-session")
 const flash = require("flash")
+const cloudinary = require('cloudinary').v2;
 
 // Import routes
 const authRoute = require("./src/routes/auth")
@@ -68,7 +69,6 @@ app.use((err, req, res, next) => {
     stack: err.stack,
   });
 });
-
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, async ()=>{
