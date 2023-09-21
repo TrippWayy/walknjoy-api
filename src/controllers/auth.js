@@ -9,6 +9,12 @@ const mail = require('../utils/sendEmail')
 const passport = require("passport")
 const nodemailer = require("nodemailer");
 var http = require('http');
+const {v2: cloudinary} = require("cloudinary");
+  cloudinary.config({
+      cloud_name: 'dvr9fma4d',
+      api_key: '842364714532777',
+      api_secret: 'n1_MPkPVrQSazoNjzaXi0N6N2f0'
+    });
 
 require("../config/passportLocal")(passport)
 require("../config/passportGoogle")(passport)
@@ -29,8 +35,15 @@ const register = async (req, res, next) => {
           }
         next(createError(400, "This email was exists!"))
       }
+      const {username, email, country, city, phone, password, img} = req.body
+      const result = cloudinary.uploader.upload(img, {folder: "avatars"}, function(error, result) {return result});
         const newUser = new User({
-          ...req.body,
+          username,
+            email,
+            country,
+            city,
+            phone,
+            img: (await result).secure_url,
           password: hash,
         });
         await newUser.save();
