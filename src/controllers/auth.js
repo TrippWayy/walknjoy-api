@@ -80,8 +80,8 @@ const resetPassword = async (req, res, next)=>{
             return next(createError(400, "This email is not verified!"))
         }
         else{
-            const token = new Token({userId: user._id, tokenId: user.password}).save();
-            const url = `${process.env.BASE_URL}/verify/${user._id}/${token.tokenId}`
+            const token = new Token({userId: user._id, tokenId: crypto.randomBytes(34).toString("hex")}).save();
+            const url = `${process.env.BASE_URL}/verify/reset/${user._id}/${token.tokenId}`
             // TODO: Mail sending need to be added here
             res.status(200).send("Mail was sent to reset your password!")
         }
