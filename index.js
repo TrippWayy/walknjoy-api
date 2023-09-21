@@ -7,12 +7,6 @@ const cors = require("cors");
 const passport = require("passport")
 const session = require("express-session")
 const flash = require("flash")
-const {v2: cloudinary} = require("cloudinary");
-  cloudinary.config({
-      cloud_name: 'dvr9fma4d',
-      api_key: '842364714532777',
-      api_secret: 'n1_MPkPVrQSazoNjzaXi0N6N2f0'
-    });
 
 // Import routes
 const authRoute = require("./src/routes/auth")
@@ -74,7 +68,6 @@ app.use((err, req, res, next) => {
     stack: err.stack,
   });
 });
-
 
 const PORT = process.env.PORT || 3000
 app.listen(PORT, async ()=>{
