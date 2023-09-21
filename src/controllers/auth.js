@@ -33,21 +33,10 @@ const register = async (req, res, next) => {
           password: hash,
         });
         await newUser.save();
-        const token = new Token({userId: newUser._id, token: crypto.randomBytes(34).toString("hex")}).save();
-        const url = `${process.env.BASE_URL}/verify/${newUser._id}/${token}`
-        var transporter = nodemailer.createTransport("smtps://test@gmail.com:"+encodeURIComponent('test12345') + "@smtp.gmail.com:465");
-        var httpServer = http.createServer(function (request, response)
-      {
-          transporter.sendMail({
-             from: 'mansimovnijat@gmail.com',
-             to: newUser.email,
-             subject: 'Verify token',
-             text: url
-          });
-          }, (err, info) => {
-            console.log(info.envelope);
-            console.log(info.messageId);
-        })
+        const token = new Token({userId: newUser._id, tokenId: crypto.randomBytes(34).toString("hex")}).save();
+        const url = `${process.env.BASE_URL}/verify/${newUser._id}/${token.tokenId}`
+        // url = "http://localhost:3000/verify/userid/tokenId"
+        // TODO: Mail sending need to be added here
         res.status(200).send("User has been created.");
       }
   } catch (err) {
@@ -80,4 +69,26 @@ const logout = async (req, res, next)=>{
   });
 }
 
-module.exports = {register, login, logout}
+const resetPassword = async (req, res, next)=>{
+    const email = req.body.email
+    try{
+        const user = await User.findOne({email: email})
+        if(!user){
+            return next(createError(404, "User not found with this email!"))
+        }
+        else if (!user.emailVerified){
+            return next(createError(400, "This email is not verified!"))
+        }
+        else{
+            const token = new Token({userId: user._id, tokenId: user.password}).save();
+            const url = `${process.env.BASE_URL}/verify/${user._id}/${token.tokenId}`
+            // TODO: Mail sending need to be added here
+            res.status(200).send("Mail was sent to reset your password!")
+        }
+    }
+    catch (e) {
+        next(e)
+    }
+}
+
+module.exports = {register, login, logout, resetPassword}
