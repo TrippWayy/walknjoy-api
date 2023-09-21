@@ -17,6 +17,7 @@ const {v2: cloudinary} = require("cloudinary");
     });
 
 require("../config/passportLocal")(passport)
+require("../config/passportGoogle")(passport)
 
 const register = async (req, res, next) => {
   try {
@@ -34,10 +35,15 @@ const register = async (req, res, next) => {
           }
         next(createError(400, "This email was exists!"))
       }
-        const result = cloudinary.uploader.upload(req.body.avatar, function(error, result) {return result});
+      const {username, email, country, city, phone, password, img} = req.body
+      const result = cloudinary.uploader.upload(img, {folder: "avatars"}, function(error, result) {return result});
         const newUser = new User({
-          ...req.body,
-            img: result.url,
+          username,
+            email,
+            country,
+            city,
+            phone,
+            img: (await result).secure_url,
           password: hash,
         });
         await newUser.save();
@@ -52,6 +58,18 @@ const register = async (req, res, next) => {
     next(err);
   }
 };
+
+const google = async (req, res, next)=>{
+    passport.authenticate('google', { scope: ['profile'] })
+}
+
+const googleCallback = async (req, res, next)=>{
+    passport.authenticate('google', { failureRedirect: '/login' }),
+      function(req, res) {
+        // Successful authentication, redirect home.
+        res.status(200).send("User has been authenticated!");
+      }
+}
 
 const login = async (req, res, next) => {
   try {

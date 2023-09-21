@@ -7,7 +7,6 @@ const cors = require("cors");
 const passport = require("passport")
 const session = require("express-session")
 const flash = require("flash")
-const cloudinary = require('cloudinary').v2;
 
 // Import routes
 const authRoute = require("./src/routes/auth")
