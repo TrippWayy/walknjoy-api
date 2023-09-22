@@ -35,15 +35,10 @@ const register = async (req, res, next) => {
           }
         next(createError(400, "This email was exists!"))
       }
-      const {username, email, country, city, phone, password, img} = req.body
-      const result = cloudinary.uploader.upload(img, {folder: "avatars"}, function(error, result) {return result});
+      // const {username, email, country, city, phone, password, img} = req.body
+      // const result = cloudinary.uploader.upload(img, {folder: "avatars"}, function(error, result) {return result});
         const newUser = new User({
-          username,
-            email,
-            country,
-            city,
-            phone,
-            img: (await result).secure_url,
+          ...req.body,
           password: hash,
         });
         await newUser.save();
