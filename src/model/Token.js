@@ -8,7 +8,7 @@ const TokenSchema = new Schema({
         ref: "user",
         unique: true
     },
-    token: {
+    tokenId: {
         type: String,
         required: true,
     },

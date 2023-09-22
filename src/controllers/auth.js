@@ -36,7 +36,7 @@ const register = async (req, res, next) => {
         next(createError(400, "This email was exists!"))
       }
       // const {username, email, country, city, phone, password, img} = req.body
-      // const result = cloudinary.uploader.upload(img, {folder: "avatars"}, function(error, result) {return result});
+      // const result = cloudinary.js.uploader.upload(img, {folder: "avatars"}, function(error, result) {return result});
         const newUser = new User({
           ...req.body,
           password: hash,
@@ -44,7 +44,7 @@ const register = async (req, res, next) => {
         await newUser.save();
         const token = new Token({userId: newUser._id, tokenId: crypto.randomBytes(34).toString("hex")})
         await token.save()
-        const url = `${process.env.BASE_URL}/verify/${newUser._id}/${token.tokenId}`
+        const url = `${process.env.BASE_URL}/verify/${newUser._id}/${token}`
         // url = "http://localhost:3000/verify/userid/tokenId"
         // TODO: Mail sending need to be added here
         res.status(200).send("User has been created.");
