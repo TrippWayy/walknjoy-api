@@ -9,17 +9,17 @@ module.exports = function (passport) {
         try {
           const user = await User.findOne({ username: username });
           if (!user) {
-            return done(null, false, { message: 'Username not found!' });
+            return done(null, false, { error: 'Username not found!' });
           }
           const isPasswordCorrect = await bcrypt.compare(
               password,
               user.password
                 );
           if (!isPasswordCorrect) {
-            return done(null, false, { message: 'Wrong username or password!' });
+            return done(null, false, { error: 'Wrong username or password!' });
           }
           if (!user.emailVerified){
-              return done(null, false, { message: 'Email not verified!' });
+              return done(null, false, { error: 'Email not verified!' });
           }
           return done(null, user);
         } catch (err) {
