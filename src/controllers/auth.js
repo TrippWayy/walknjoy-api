@@ -47,7 +47,7 @@ const register = async (req, res, next) => {
         const url = `${process.env.BASE_URL}/verify/${newUser._id}/${token}`
         // url = "http://localhost:3000/verify/userid/tokenId"
         // TODO: Mail sending need to be added here
-        res.status(200).send("User has been created.");
+        res.status(200).json({success: "User has been created!"});
       }
   } catch (err) {
     next(err);
@@ -73,11 +73,26 @@ const login = async (req, res, next) => {
         next(createError(400, errors.errors[0].msg));
       }
       else {
-        passport.authenticate('local', {
-            successRedirect: "/",
-            failureRedirect: "/auth/login",
-            failureFlash: true,
-        })(req, res, next)
+        passport.authenticate('local', (err, user) => {
+            if (err) {
+                console.error(err);
+                return res.status(500).json({ error: "An error occurred during authentication." });
+            }
+
+            if (!user) {
+                return res.status(401).json({ error: "Authentication failed." });
+            }
+
+            req.login(user, loginErr => {
+                if (loginErr) {
+                    console.error(loginErr);
+                    return res.status(500).json({ error: "An error occurred during login." });
+                }
+
+                return res.status(200).json({ success: "User has been logged in successfully!" });
+            });
+        })(req, res, next);
+
       }
   } catch (err) {
     next(err);
