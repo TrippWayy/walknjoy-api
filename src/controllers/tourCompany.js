@@ -77,7 +77,7 @@ const addReview = async (req, res, next)=>{
     const tourCompany = await TourCompany.findById(req.params.companyID)
     tourCompany.reviews.push({reviewData})
     await tourCompany.save()
-    res.status(200).json({message: "Review has been added successfuly!"})
+    res.status(200).json({success: "Review has been added successfuly!"})
   }catch (e) {
     next(e)
   }

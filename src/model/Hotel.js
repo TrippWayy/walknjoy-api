@@ -8,6 +8,9 @@ const HotelSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  logo: {
+    type: String
+  },
   city: {
     type: String,
     required: true,
@@ -47,10 +50,15 @@ const HotelSchema = new mongoose.Schema({
     type: Boolean,
     default: false,
   },
-  reviews: {
-    type: [String],
-    default: []
-  }
+  reviews: [
+    {
+      reviewData: {
+        username: String,
+        image: String,
+        review: String,
+      },
+    },
+  ],
 }, {collection: "Hotels"});
 
 const Hotel =  mongoose.model("Hotel", HotelSchema)
