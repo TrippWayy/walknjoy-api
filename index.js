@@ -7,6 +7,8 @@ const cors = require("cors");
 const passport = require("passport")
 const session = require("express-session")
 const flash = require("flash")
+const bodyParser = require("body-parser");
+
 
 // Import routes
 const authRoute = require("./src/routes/auth")
@@ -38,11 +40,15 @@ app.use(session({
 }))
 
 // Middlewares
-app.use(cors())
+app.use(cors({credentials: true}))
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded())
-
+app.use(
+  bodyParser.urlencoded({
+    extended: true,
+  })
+);
 app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
