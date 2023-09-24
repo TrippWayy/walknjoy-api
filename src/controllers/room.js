@@ -49,11 +49,11 @@ const updateRoomAvailability = async (req, res, next) => {
   }
 };
 const deleteRoom = async (req, res, next) => {
-  const hotelId = req.params.hotelid;
+  const hotelID = req.params.hotelID;
   try {
     await Room.findByIdAndDelete(req.params.id);
     try {
-      await Hotel.findByIdAndUpdate(hotelId, {
+      await Hotel.findByIdAndUpdate(hotelID, {
         $pull: { rooms: req.params.id },
       });
     } catch (err) {

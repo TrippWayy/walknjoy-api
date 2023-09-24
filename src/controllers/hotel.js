@@ -1,6 +1,5 @@
 const Hotel = require("../model/Hotel");
 const Room = require("../model/Room");
-const TourCompany = require("../model/TourCompany");
 
 const createHotel = async (req, res, next) => {
   const newHotel = new Hotel(req.body);
@@ -67,7 +66,7 @@ const addReview = async (req, res, next)=>{
     const hotel = await Hotel.findById(req.params.hotelID)
     hotel.reviews.push({reviewData})
     await hotel.save()
-    res.status(200).json({message: "Review has been added successfuly!"})
+    res.status(200).json({success: "Review has been added successfuly!"})
   }catch (e) {
     next(e)
   }

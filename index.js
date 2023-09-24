@@ -17,6 +17,8 @@ const hotelsRoute = require("./src/routes/hotels")
 const roomsRoute = require("./src/routes/rooms")
 const tourRoute = require("./src/routes/tours")
 const tourCompanies = require("./src/routes/tourCompanies")
+const rentalCar = require("./src/routes/rentalCar")
+const carRoute = require("./src/routes/car")
 
 const app = express()
 dotenv.config()
@@ -59,6 +61,8 @@ app.use("/api/hotels", hotelsRoute);
 app.use("/api/rooms", roomsRoute);
 app.use("/api/tours", tourRoute);
 app.use("/api/tour-companies", tourCompanies)
+app.use("/api/rental-car", rentalCar)
+app.use("/api/car", carRoute)
 
 
 // Middleware for possible errors
@@ -74,7 +78,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, async ()=>{
     connect();
