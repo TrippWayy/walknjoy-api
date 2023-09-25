@@ -67,37 +67,25 @@ const googleCallback = async (req, res, next)=>{
 }
 
 const login = async (req, res, next) => {
-  try {
-      const errors = validationResult(req)
-      if(!errors.isEmpty()) {
-        next(createError(400, errors.errors[0].msg));
+  passport.authenticate('local', (err, user, info) => {
+    if (err) {
+      console.error(err);
+      return res.status(500).json({ error: "An error occurred during authentication." });
+    }
+    if (!user) {
+      return res.status(401).json(info); // Pass along the error message from LocalStrategy
+    }
+
+    req.login(user, (loginErr) => {
+      if (loginErr) {
+        console.error(loginErr);
+        return res.status(500).json({ error: "An error occurred during login." });
       }
-      else {
-        passport.authenticate('local', (err, user) => {
-            if (err) {
-                console.error(err);
-                return res.status(500).json({ error: "An error occurred during authentication." });
-            }
-
-            if (!user) {
-                return res.status(401).json({ error: "Authentication failed." });
-            }
-
-            req.login(user, loginErr => {
-                if (loginErr) {
-                    console.error(loginErr);
-                    return res.status(500).json({ error: "An error occurred during login." });
-                }
-
-                return res.status(200).json({ success: "User has been logged in successfully!" });
-            });
-        })(req, res, next);
-
-      }
-  } catch (err) {
-    next(err);
-  }
+      return res.status(200).json({ success: "User has been logged in successfully!" });
+    });
+  })(req, res, next);
 };
+
 
 const logout = async (req, res, next)=>{
     req.logout(function(err) {
