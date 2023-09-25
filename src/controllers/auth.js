@@ -90,7 +90,7 @@ const login = async (req, res, next) => {
 const logout = async (req, res, next)=>{
     req.logout(function(err) {
     if (err) { return next(err); }
-    res.status(200).send("User has been logged out!")
+    res.status(200).json({success: "User has been logged out!"})
   });
 }
 
@@ -109,7 +109,7 @@ const resetPassword = async (req, res, next)=>{
             await token.save()
             const url = `${process.env.BASE_URL}/verify/reset/${user._id}/${token.tokenId}`
             // TODO: Mail sending need to be added here
-            res.status(200).send("Mail was sent to reset your password!")
+            res.status(200).json({success: "Mail was sent to reset your password!"})
         }
     }
     catch (e) {
