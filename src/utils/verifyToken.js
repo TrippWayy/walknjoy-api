@@ -9,6 +9,16 @@ const checkLogin = (req, res, next)=>{
   }
 }
 
+const checkUnLogin = (req, res, next)=>{
+  if(!req.isAuthenticated()){
+    return next()
+  }
+  else{
+    return next(createError(400, "You first must logout!"))
+  }
+}
+
+
 const checkAdmin = (req, res, next)=>{
   if(req.isAuthenticated() && req.user.isAdmin){
     return next()
@@ -18,4 +28,4 @@ const checkAdmin = (req, res, next)=>{
   }
 }
 
-module.exports = {checkLogin, checkAdmin}
+module.exports = {checkLogin, checkUnLogin, checkAdmin}
