@@ -5,19 +5,17 @@ const jwt = require("jsonwebtoken")
 const {validationResult} = require("express-validator");
 const Token = require("../model/Token")
 const crypto = require("crypto")
-const mail = require('../utils/sendEmail')
+const send = require('../utils/sendEmail')
 const passport = require("passport")
-const nodemailer = require("nodemailer");
 var http = require('http');
 const {v2: cloudinary} = require("cloudinary");
-  cloudinary.config({
+require("../config/passportLocal")(passport)
+require("../config/passportGoogle")(passport)
+cloudinary.config({
       cloud_name: 'dvr9fma4d',
       api_key: '842364714532777',
       api_secret: 'n1_MPkPVrQSazoNjzaXi0N6N2f0'
     });
-
-require("../config/passportLocal")(passport)
-require("../config/passportGoogle")(passport)
 
 const register = async (req, res, next) => {
   try {
@@ -30,11 +28,12 @@ const register = async (req, res, next) => {
     else{
       const user = await User.findOne({email: req.body.email})
       if (user && user.emailVerified) {
-          if(user){
-              const removeUser = await User.findByIdAndDelete({_id: user._id})
-          }
         next(createError(400, "This email was exists!"))
       }
+      else if (user && !user.emailVerified){
+          const removeToken = await Token.findByIdAndDelete({userId: user._id})
+          const removeUser = await User.findByIdAndDelete({_id: user._id})
+          }
       // const {username, email, country, city, phone, password, img} = req.body
       // const result = cloudinary.js.uploader.upload(img, {folder: "avatars"}, function(error, result) {return result});
         const newUser = new User({
@@ -45,8 +44,13 @@ const register = async (req, res, next) => {
         const token = new Token({userId: newUser._id, tokenId: crypto.randomBytes(34).toString("hex")})
         await token.save()
         const url = `${process.env.BASE_URL}/verify/${newUser._id}/${token.tokenId}`
-        // url = "http://localhost:3000/verify/userid/tokenId"
-        // TODO: Mail sending need to be added here
+        console.log(url)
+        const options = {
+            email: newUser.email,
+            subject: "Verify Email",
+            message: url
+        }
+        await send.sendMail(options)
         res.status(200).json({success: "User has been created!"});
       }
   } catch (err) {
@@ -78,10 +82,10 @@ const login = async (req, res, next) => {
 
     req.login(user, (loginErr) => {
       if (loginErr) {
-        console.error(loginErr);
-        return res.status(500).json({ error: "An error occurred during login." });
+          console.error(loginErr);
+          return res.status(500).json({error: "An error occurred during login."});
       }
-      return res.status(200).json({ success: "User has been logged in successfully!" });
+      return res.status(200).json({ success: "User has been logged in successfully!", img: user.img });
     });
   })(req, res, next);
 };
