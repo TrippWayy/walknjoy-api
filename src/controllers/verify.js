@@ -11,14 +11,14 @@ exports.verifyEmail = async (req, res, next)=>{
         }else{
             const token = await Token.findOne({
                 userId: user._id,
-                tokenId: req.params.token
+                tokenId: req.params.tokenID
             })
             if(!token){
                 return next(createError(400, "Invalid token!"))
             }else {
                 await User.findByIdAndUpdate({_id:user._id}, {emailVerified: true}, {new:true})
                 const removedToken = await Token.findByIdAndDelete({_id: token._id})
-                res.status(200).send("Email has been verified!")
+                res.status(200).json({success: "Email has been verified!"})
             }
         }
     }catch (e) {
