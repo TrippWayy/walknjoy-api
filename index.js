@@ -7,6 +7,7 @@ const cors = require("cors");
 const passport = require("passport")
 const session = require("express-session")
 const bodyParser = require("body-parser");
+const ejs = require("ejs")
 
 
 // Import routes
@@ -52,10 +53,13 @@ app.use(
 );
 app.use(passport.initialize())
 app.use(passport.session())
+app.set('view engine', 'ejs');
+app.set('views', __dirname + '/src/views');
+app.use(express.static('public'));
 
 // Routers
 app.use("/api/auth", authRoute)
-app.use("/verify", verifyRoute)
+app.use("/api/verify", verifyRoute)
 app.use("/api/users", usersRoute)
 app.use("/api/hotels", hotelsRoute);
 app.use("/api/rooms", roomsRoute);
@@ -64,7 +68,6 @@ app.use("/api/tour-companies", tourCompanies)
 app.use("/api/rental-car", rentalCar)
 app.use("/api/car", carRoute)
 
-
 // Middleware for possible errors
 app.use((err, req, res, next) => {
   const errorStatus = err.status || 500;
@@ -72,11 +75,15 @@ app.use((err, req, res, next) => {
   return res.status(errorStatus).json({
     success: false,
     status: errorStatus,
-    message: errorMessage,
+    error: errorMessage,
     stack: err.stack,
       error: err
   });
 });
+
+app.get("/", (req, res, next)=>{
+    res.render("emailVerifiedPage")
+})
 
 const PORT = process.env.PORT || 3000
 
