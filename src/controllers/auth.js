@@ -41,14 +41,6 @@ const register = async (req, res, next) => {
   });
   await token.save();
   const url = `${process.env.BASE_URL}/api/verify/${newUser._id}/${token.tokenId}`;
-  console.log(url);
-  const myCookieOptions = {
-    userId: newUser._id,
-    tokenId: token.tokenId,
-  };
-  const myCookie = cookie.serialize('activation', JSON.stringify(myCookieOptions));
-  res.setHeader('Set-Cookie', myCookie);
-  res.writeHead(200, { 'Content-Type': 'text/plain' });
   const options = {
     email: newUser.email,
     subject: 'Verify Email',
