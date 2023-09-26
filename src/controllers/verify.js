@@ -18,7 +18,7 @@ exports.verifyEmail = async (req, res, next)=>{
             }else {
                 await User.findByIdAndUpdate({_id:user._id}, {emailVerified: true}, {new:true})
                 const removedToken = await Token.findByIdAndDelete({_id: token._id})
-                res.status(200).json({success: "Email has been verified!"})
+                res.status(200).render("emailVerifiedPage")
             }
         }
     }catch (e) {
