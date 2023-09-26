@@ -22,7 +22,7 @@ cloudinary.config({
 const register = async (req, res, next) => {
   try {
     const salt = bcrypt.genSaltSync(10);
-    const hash = bcrypt.hashSync(req.body.password, salt);
+    const hash = await bcrypt.hashSync(req.body.password, salt);
   const user = await User.findOne({ email: req.body.email });
   if (user && user.emailVerified) {
     next(createError(400, 'This email was exists!'));
@@ -93,7 +93,7 @@ const logout = async (req, res, next)=>{
   });
 }
 
-const resetPassword = async (req, res, next)=>{
+const forgetPassword = async (req, res, next)=>{
     const email = req.body.email
     try{
         const user = await User.findOne({email: email})
@@ -107,8 +107,13 @@ const resetPassword = async (req, res, next)=>{
             const token = new Token({userId: user._id, tokenId: crypto.randomBytes(34).toString("hex")})
             await token.save()
             const url = `${process.env.BASE_URL}/verify/reset/${user._id}/${token.tokenId}`
-            // TODO: Mail sending need to be added here
-            res.status(200).json({success: "Mail was sent to reset your password!"})
+            const options = {
+                email: newUser.email,
+                subject: 'Reset password',
+                message: url,
+              };
+            await send.sendMail(options);
+            res.status(200).render()
         }
     }
     catch (e) {
@@ -116,4 +121,4 @@ const resetPassword = async (req, res, next)=>{
     }
 }
 
-module.exports = {register, login, logout, resetPassword}
+module.exports = {register, login, logout, forgetPassword}

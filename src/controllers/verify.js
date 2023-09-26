@@ -1,9 +1,10 @@
 const User = require("../model/User")
 const Token = require('../model/Token')
 const createError = require("../utils/error")
+const bcrypt = require("bcrypt")
 
 exports.verifyEmail = async (req, res, next)=>{
-    userID = req.params.userID
+    const userID = req.params.userID
     try{
         const user = await User.findOne({_id: userID})
         if(!user){
@@ -27,7 +28,7 @@ exports.verifyEmail = async (req, res, next)=>{
 }
 
 exports.verifyReset = async (req, res, next)=>{
-    userID = req.params.userID
+    const userID = req.params.userID
     try{
         const user = await User.findOne({_id: userID})
         if(!user){
@@ -35,15 +36,21 @@ exports.verifyReset = async (req, res, next)=>{
         }else{
             const token = await Token.findOne({
                 userId: user._id,
-                tokenId: req.params.token
+                tokenId: req.params.tokenID
             })
             if(!token){
                 return next(createError(400, "Invalid token!"))
             }
             else{
-                await User.findByIdAndUpdate({_id:user._id}, {password: req.body.password}, {new:true})
+                if(req.body.passoword === req.body.confirmPassword){
+                    const salt = bcrypt.genSaltSync(10);
+                    const hash = await bcrypt.hashSync(req.body.password, salt);
+                await User.findByIdAndUpdate({_id:user._id}, {password: hash}, {new:true})
                 const removedToken = await Token.findByIdAndDelete({_id: token._id})
-                res.status(200).send("Password has been updated!")
+                res.status(200).json({success: "Password has been updated!"})}
+                else{
+                    return next(createError(400, "Password and confirm password are not the same!"))
+                }
             }
         }
     }
