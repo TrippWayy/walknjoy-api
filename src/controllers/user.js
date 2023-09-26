@@ -3,7 +3,7 @@ const User = require("../model/User");
 const updateUser = async (req,res,next)=>{
   try {
     const updatedUser = await User.findByIdAndUpdate(
-      req.params.id,
+        {_id: req.user._id},
       { $set: req.body },
       { new: true }
     );
@@ -23,7 +23,7 @@ const deleteUser = async (req,res,next)=>{
 }
 const getUser = async (req,res,next)=>{
   try {
-    const user = await User.findById(req.params.id);
+    const user = await User.findById({_id: req.user._id});
     res.status(200).json(user);
   } catch (err) {
     next(err);
