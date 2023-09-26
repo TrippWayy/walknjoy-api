@@ -15,7 +15,7 @@ const updateUser = async (req,res,next)=>{
 
 const deleteUser = async (req,res,next)=>{
   try {
-    await User.findByIdAndDelete(req.params.id);
+    await User.findByIdAndDelete({_id: req.user._id)});
     res.status(200).json("User has been deleted.");
   } catch (err) {
     next(err);
