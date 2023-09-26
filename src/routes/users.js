@@ -3,10 +3,10 @@ const router = require("express").Router();
 const {updateUser, deleteUser, getUser, getUsers} = require("../controllers/user")
 
 //UPDATE
-router.put("/update", checkLogin, updateUser);
+router.put("/user/update", checkLogin, updateUser);
 
 //DELETE
-router.delete("/:id", checkLogin, deleteUser);
+router.delete("/user/delete", checkLogin, deleteUser);
 
 //GET
 router.get("/user", checkLogin, getUser);
