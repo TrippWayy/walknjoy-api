@@ -113,7 +113,7 @@ const forgetPassword = async (req, res, next)=>{
                 message: url,
               };
             await send.sendMail(options);
-            res.status(200).render()
+            res.status(200).render("resetPasswordPage")
         }
     }
     catch (e) {
