@@ -5,6 +5,7 @@ const checkLogin = (req, res, next)=>{
     return next()
   }
   else{
+    console.log(req.user)
     return next(createError(400, "You first must login!"))
   }
 }

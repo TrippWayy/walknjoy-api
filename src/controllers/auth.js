@@ -7,17 +7,10 @@ const Token = require("../model/Token")
 const crypto = require("crypto")
 const send = require('../utils/sendEmail')
 const passport = require("passport")
-const cookieParser = require("cookie-parser");
-const cookie = require("cookie")
 var http = require('http');
-const {v2: cloudinary} = require("cloudinary");
+
 require("../config/passportLocal")(passport)
 require("../config/passportGoogle")(passport)
-cloudinary.config({
-      cloud_name: 'dvr9fma4d',
-      api_key: '842364714532777',
-      api_secret: 'n1_MPkPVrQSazoNjzaXi0N6N2f0'
-    });
 
 const register = async (req, res, next) => {
   try {
@@ -80,6 +73,7 @@ const login = async (req, res, next) => {
           console.error(loginErr);
           return res.status(500).json({error: "An error occurred during login."});
       }
+
       return res.status(200).json({ success: "User has been logged in successfully!", img: user.img });
     });
   })(req, res, next);
