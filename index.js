@@ -8,6 +8,7 @@ const passport = require("passport")
 const session = require("express-session")
 const bodyParser = require("body-parser");
 const ejs = require("ejs")
+const MongoStore = require('connect-mongodb-session')(session)
 
 
 // Import routes
@@ -34,12 +35,26 @@ const connect = async ()=>{
   }
 };
 
-// Passport local
-app.use(session({
+
+// Configure session store
+const sessionStore = new MongoStore({
+  uri: process.env.DB_URL,
+  collection: 'Sessions', // Replace with your session collection name
+});
+
+// Set up session middleware
+app.use(
+  session({
     secret: process.env.SESSION_SECRET,
     resave: false,
-    saveUninitialized: true
-}))
+    saveUninitialized: true,
+    store: sessionStore,
+    cookie: {
+      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds (adjust as needed)
+      httpOnly: true,
+    },
+  })
+);
 
 // Middlewares
 app.use(cors({credentials: true}))
