@@ -23,7 +23,7 @@ const deleteUser = async (req,res,next)=>{
 }
 const getUser = async (req,res,next)=>{
   try {
-    const user = await User.find({username: req.params.username});
+    const user = await User.findById(req.user._id);
     res.status(200).json(user);
   } catch (err) {
     next(err);
@@ -38,13 +38,5 @@ const getUsers = async (req,res,next)=>{
   }
 }
 
-const getUsername = async (req,res,next)=>{
-  try {
-    const user = await User.findById({_id: req.user._id});
-    res.status(200).json({username: user.username});
-  } catch (err) {
-    next(err);
-  }
-}
 
-module.exports = {updateUser, deleteUser, getUsers, getUser, getUsername}
+module.exports = {updateUser, deleteUser, getUsers, getUser}
