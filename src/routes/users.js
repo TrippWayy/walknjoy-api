@@ -1,9 +1,11 @@
 const {checkLogin, checkAdmin} = require("../utils/verifyToken");
 const router = require("express").Router();
 const {updateUser, deleteUser, getUser, getUsers} = require("../controllers/user")
+const upload = require("../middlewares/multer");
+const cloudinary = require("../middlewares/cloudinary");
 
 //UPDATE
-router.put("/user/update", checkLogin, updateUser);
+router.put("/user/update", checkLogin, upload.single('img'), cloudinary.uploadCloud, updateUser);
 
 //DELETE
 router.delete("/user/delete", checkLogin, deleteUser);

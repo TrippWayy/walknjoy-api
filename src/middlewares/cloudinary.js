@@ -17,11 +17,9 @@ exports.uploadCloud = async (req, res, next) => {
             fs.unlinkSync(image);
             next();
         } else {
-            console.log("File couldn't be uploaded to Cloudinary");
-            res.status(500).json({ error: "File upload failed" });
+            res.status(500).json({ error: "File upload failed!" });
         }
     } catch (e) {
-        console.error("Error uploading to Cloudinary:", e);
-        res.status(500).json({ error: "Internal server error" });
+        res.status(500).json({ error: "Internal server error!" });
     }
 };
