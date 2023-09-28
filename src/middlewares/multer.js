@@ -4,11 +4,9 @@ const path = require("path")
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
       cb(null, path.join(__dirname, "../uploads/avatars"));
-      console.log(file)
     },
     filename: (req, file, cb) => {
       cb(null, req.body.email + "_pp.png")
-        console.log(file)
     }
 });
 
