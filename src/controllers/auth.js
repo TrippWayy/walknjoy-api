@@ -7,7 +7,6 @@ const Token = require("../model/Token")
 const crypto = require("crypto")
 const send = require('../utils/sendEmail')
 const passport = require("passport")
-var http = require('http');
 
 require("../config/passportLocal")(passport)
 require("../config/passportGoogle")(passport)
@@ -91,23 +90,20 @@ const forgetPassword = async (req, res, next)=>{
     const email = req.body.email
     try{
         const user = await User.findOne({email: email})
-        if(!user){
-            return next(createError(404, "User not found with this email!"))
-        }
-        else if (!user.emailVerified){
-            return next(createError(400, "This email is not verified!"))
+        if(!user || !user.emailVerified){
+            return next(createError(404, "User or email not found!"))
         }
         else{
             const token = new Token({userId: user._id, tokenId: crypto.randomBytes(34).toString("hex")})
             await token.save()
-            const url = `${process.env.BASE_URL}/verify/reset/${user._id}/${token.tokenId}`
+            const url = `${process.env.BASE_URL}/api/verify/reset-password/${user._id}/${token.tokenId}`
             const options = {
-                email: newUser.email,
+                email: user.email,
                 subject: 'Reset password',
                 message: url,
-              };
+            };
             await send.sendMail(options);
-            res.status(200).render("resetPasswordPage")
+            res.status(200).json({success: "To reset password, link has been sent your email! "})
         }
     }
     catch (e) {
@@ -115,4 +111,34 @@ const forgetPassword = async (req, res, next)=>{
     }
 }
 
-module.exports = {register, login, logout, forgetPassword}
+const resetPassword = async (req, res, next)=>{
+    try{
+        if(req.body.password === req.body.confirmPassword){
+            const hash = await bcrypt.hashSync(req.body.password, 10);
+                const user = await User.findByIdAndUpdate({_id: req.session.userID}, {password: hash}, {new: true})
+                res.status(200).json({success: "User password has been updated!"})
+        }
+        else{
+            res.status(400).json({error: "Password and confirm password are not the same!"})
+        }
+    }catch (e) {
+        next(e)
+    }
+}
+
+const resetProfilePassword = async (req, res, next)=>{
+    try{
+        if(req.body.password === req.body.confirmPassword){
+            const hash = await bcrypt.hashSync(req.body.password, 10);
+                const user = await User.findByIdAndUpdate({_id: req.user._id}, {password: hash}, {new: true})
+                res.status(200).json({success: "User password has been updated!"})
+        }
+        else{
+            res.status(400).json({error: "Password and confirm password are not the same!"})
+        }
+    }catch (e) {
+        next(e)
+    }
+}
+
+module.exports = {register, login, logout, forgetPassword, resetPassword, resetProfilePassword}
