@@ -42,15 +42,9 @@ exports.verifyReset = async (req, res, next)=>{
                 return next(createError(400, "Invalid token!"))
             }
             else{
-                if(req.body.passoword === req.body.confirmPassword){
-                    const salt = bcrypt.genSaltSync(10);
-                    const hash = await bcrypt.hashSync(req.body.password, salt);
-                await User.findByIdAndUpdate({_id:user._id}, {password: hash}, {new:true})
                 const removedToken = await Token.findByIdAndDelete({_id: token._id})
-                res.status(200).json({success: "Password has been updated!"})}
-                else{
-                    return next(createError(400, "Password and confirm password are not the same!"))
-                }
+                req.session.userID = userID
+                res.status(200).redirect("http://localhost:3001/reset-password")
             }
         }
     }
