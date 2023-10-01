@@ -11,6 +11,7 @@ module.exports = function (passport) {
           if (!user || !(await bcrypt.compare(password, user.password))) {
             return done(null, false, {error: "Username or password incorrect!"});
           }
+
           if(!user.emailVerified){
             return done(null, false, { error: 'Email not verified!' });
           }
