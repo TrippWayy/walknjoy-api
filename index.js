@@ -21,6 +21,7 @@ const tourRoute = require("./src/routes/tours")
 const tourCompanies = require("./src/routes/tourCompanies")
 const rentalCar = require("./src/routes/rentalCar")
 const carRoute = require("./src/routes/car")
+const collaborateRoute = require("./src/routes/collaborate")
 
 const app = express()
 dotenv.config()
@@ -82,6 +83,7 @@ app.use("/api/tours", tourRoute);
 app.use("/api/tour-companies", tourCompanies)
 app.use("/api/rental-car", rentalCar)
 app.use("/api/car", carRoute)
+app.use("/api/collaborate", collaborateRoute)
 
 // Middleware for possible errors
 app.use((err, req, res, next) => {

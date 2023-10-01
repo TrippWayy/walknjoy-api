@@ -5,10 +5,18 @@ const checkLogin = (req, res, next)=>{
     return next()
   }
   else{
-    console.log(req.user)
     return next(createError(400, "You first must login!"))
   }
 }
+
+// const checkEmployee = (req, res, next)=>{
+//   if(req.user.isEmployee){
+//     return next()
+//   }
+//   else{
+//     return next(createError(400, "You are not employee!"))
+//   }
+// }
 
 const checkUnLogin = (req, res, next)=>{
   if(!req.isAuthenticated()){
