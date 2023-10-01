@@ -20,6 +20,11 @@ const CompanySchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    rating: {
+    type: Number,
+    min: 0,
+    max: 5,
+  },
     reviews: [
     {
       reviewData: {

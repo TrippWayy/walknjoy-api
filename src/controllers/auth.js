@@ -141,4 +141,23 @@ const resetProfilePassword = async (req, res, next)=>{
     }
 }
 
-module.exports = {register, login, logout, forgetPassword, resetPassword, resetProfilePassword}
+const employeeLogin = async (req, res, next)=>{
+    passport.authenticate('local', (err, user, info) => {
+        if (err) {
+          return res.status(500).json({ error: "An error occurred during authentication." });
+        }
+        if (!user) {
+          return res.status(401).json(info); // Pass along the error message from LocalStrategy
+        }
+
+        req.login(user, (loginErr) => {
+          if (loginErr) {
+              return res.status(500).json({error: "An error occurred during login."});
+          }
+
+          return res.status(200).json({ success: "Employee has been logged in successfully!"});
+        });
+      })(req, res, next);
+}
+
+module.exports = {register, login, logout, forgetPassword, resetPassword, resetProfilePassword, employeeLogin}
