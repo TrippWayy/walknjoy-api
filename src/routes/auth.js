@@ -7,7 +7,7 @@ const cloudinary = require("../middlewares/cloudinary")
 
 router.post("/register", checkUnLogin, upload.single('img'), cloudinary.uploadCloud, register)
 router.post("/login", checkUnLogin, login)
-router.post("/admin/login", checkAdmin, login)
+router.post("/admin/login", checkUnLogin, checkAdmin, login)
 router.post("/logout", checkLogin, logout)
 router.post("/forgot-password", checkUnLogin, forgetPassword)
 router.post("/user/reset-password", checkUnLogin, resetPassword)
