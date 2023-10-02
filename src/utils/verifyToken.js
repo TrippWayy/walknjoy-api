@@ -29,7 +29,7 @@ const checkUnLogin = (req, res, next)=>{
 
 
 const checkAdmin = (req, res, next)=>{
-  if(req.isAuthenticated() && req.user.isAdmin){
+  if(req.user.isAdmin){
     return next()
   }
   else{
