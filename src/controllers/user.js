@@ -1,9 +1,7 @@
 const User = require("../model/User");
-const Token = require("../model/Token");
-const crypto = require("crypto");
-const send = require("../utils/sendEmail");
 
 const updateUser = async (req,res,next)=>{
+  console.log("controller icine girdi")
   try {
       const updatedUser = await User.findByIdAndUpdate(
           {_id: req.user._id},

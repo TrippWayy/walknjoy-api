@@ -9,8 +9,9 @@ cloudinary.config({
 
 exports.uploadCloud = async (req, res, next) => {
     try {
-        const image = path.join(__dirname, `../uploads/avatars/${req.body.email}_pp.png`);
-        const result = await cloudinary.v2.uploader.upload(image, { public_id: `${req.body.username}_pp.png` });
+
+        const image = path.join(__dirname, `../uploads/avatars/${req.user.email}_pp.png`);
+        const result = await cloudinary.v2.uploader.upload(image, { public_id: `${req.user.email}_pp.png` });
 
         if (result.secure_url) {
             req.body.img = result.secure_url;
