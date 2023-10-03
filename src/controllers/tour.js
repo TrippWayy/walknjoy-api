@@ -4,12 +4,12 @@ const Room = require("../model/Room");
 const Hotel = require("../model/Hotel");
 
 const createTour = async (req, res, next)=>{
-      const companyId = req.params.companyid;
+      const companyID = req.params.companyID;
       const newTour = new Tour(req.body);
       try {
         const savedTour = await newTour.save();
         try{
-            await TourCompany.findByIdAndUpdate(companyId, {
+            await TourCompany.findByIdAndUpdate(companyID, {
                 $push: {tours: savedTour._id}
             })
         }catch (err) {
@@ -40,7 +40,7 @@ const updateTourAvailability = async (req, res, next)=>{
           { "tourNumbers._id": req.params.id },
           {
             $push: {
-              "roomNumbers.$.unavailableDates": req.body.dates
+              "placeNumber.$.unavailableDates": req.body.dates
             },
           }
         );
@@ -82,9 +82,9 @@ const getTours = async (req, res, next) => {
     const query = {};
 
     if (min || max) {
-      query.cheapestPrice = {};
-      if (min) query.cheapestPrice.$gt = parseInt(min);
-      if (max) query.cheapestPrice.$lt = parseInt(max);
+      query.price = {};
+      if (min) query.price.$gt = parseInt(min);
+      if (max) query.price.$lt = parseInt(max);
     }
 
     const tours = await Tour.find({ ...others, ...query }).limit(req.query.limit || 0);
@@ -124,6 +124,16 @@ const countByCity = async (req, res, next)=>{
   }
 }
 
+const getToursByCompanyName = async (req, res, next)=>{
+    try{
+        const companyID = req.params.companyID
+        const company = await TourCompany.findById(companyID);
+        const tours = await Tour.find({companyName: company.name})
+        res.status(200).json(tours)
+    }catch (err) {
+        next(err)
+    }
+}
 
 module.exports = {
     createTour,
@@ -133,5 +143,6 @@ module.exports = {
     getTours,
     countByCategory,
     updateTourAvailability,
-    countByCity
+    countByCity,
+    getToursByCompanyName
 }

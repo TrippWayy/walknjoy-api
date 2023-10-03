@@ -2,7 +2,7 @@ const mongoose = require("mongoose")
 
 // Define the Car Schema
 const CarSchema = new mongoose.Schema({
-  make: {
+  title: {
     type: String,
     require: true,
   },
@@ -23,9 +23,13 @@ const CarSchema = new mongoose.Schema({
     min: 0,
     max: 5,
   },
-  pricePerDay: {
+  price: {
     type: Number,
     require: true,
+  },
+  percent: {
+    type: Number,
+    default: 0
   },
   available: {
     type: Boolean,

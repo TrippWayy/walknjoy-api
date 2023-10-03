@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const TourSchema = new mongoose.Schema({
-    name: {
+    title: {
         type: String,
         require: true,
         trim: true
@@ -17,10 +17,6 @@ const TourSchema = new mongoose.Schema({
     finishDate: {
       type: Date,
       require: true
-    },
-    companyAddress: {
-        type: String,
-        require: true
     },
     price: {
         type: Number,
@@ -50,7 +46,7 @@ const TourSchema = new mongoose.Schema({
         type: Boolean,
         require: true
     },
-    placeCount: [{number: Number, unavailableDates: {type: [Date]}}]
+    placeNumber: [{ number: Number, unavailableDates: {type: [Date]}}],
 }, {timestamps: true, collection: "Tours"})
 
 const Tour = mongoose.model("Tour", TourSchema)
