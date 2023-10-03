@@ -2,37 +2,37 @@ const mongoose = require("mongoose");
 const HotelSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true,
+    require: true,
   },
   type: {
     type: String,
-    required: true,
+    require: true,
   },
   logo: {
     type: String
   },
   city: {
     type: String,
-    required: true,
+    require: true,
   },
   address: {
     type: String,
-    required: true,
+    require: true,
   },
   distance: {
     type: String,
-    required: true,
+    require: true,
   },
   photos: {
     type: [String],
   },
   title: {
     type: String,
-    required: true,
+    require: true,
   },
   desc: {
     type: String,
-    required: true,
+    require: true,
   },
   rating: {
     type: Number,
@@ -44,7 +44,7 @@ const HotelSchema = new mongoose.Schema({
   },
   cheapestPrice: {
     type: Number,
-    required: true,
+    require: true,
   },
   featured: {
     type: Boolean,

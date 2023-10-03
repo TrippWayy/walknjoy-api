@@ -8,7 +8,7 @@ const createCar = async (req, res, next)=>{
         const savedCar = await newCar.save();
         try{
             await RentalCar.findByIdAndUpdate(rentalID, {
-                $push: {tours: savedCar._id}
+                $push: {cars: savedCar._id}
             })
         }catch (err) {
             next(err)
@@ -76,17 +76,30 @@ const getCar = async (req, res, next) => {
 };
 
 const getCars = async (req, res, next) => {
-  const { min, max, ...others } = req.query;
   try {
-    const cars = await Car.find({
-      ...others,
-      pricePerDay: { $gt: min | 1, $lt: max || 999 },
-    }).limit(req.query.limit);
-    res.status(200).json(cars);
+    if (Object.keys(req.query).length === 0) {
+      const cars = await Car.find({});
+      res.status(200).json(cars);
+    } else {
+      const { min, max, ...others } = req.query;
+
+      // Use parseInt to convert min and max to numbers
+      const minPrice = parseInt(min) || 1;
+      const maxPrice = parseInt(max) || 999;
+
+      const cars = await Car.find({
+        ...others,
+        pricePerDay: { $gt: minPrice, $lt: maxPrice },
+      }).limit(req.query.limit);
+
+      res.status(200).json(cars);
+    }
   } catch (err) {
     next(err);
   }
 };
+
+
 
 
 module.exports = {

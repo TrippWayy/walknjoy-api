@@ -18,7 +18,11 @@ const EmployeeSchema = new mongoose.Schema({
         type: String,
         require: true,
         trim: true
-    }
+    },
+    isEmployee: {
+        type: Boolean,
+          default: true
+      }
 }, {timestamps: true, collection: "Employees"})
 
 const CompanyEmployee = mongoose.model("CompanyEmployee", EmployeeSchema)

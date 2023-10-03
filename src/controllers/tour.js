@@ -77,17 +77,24 @@ const getTour = async (req, res, next) => {
 };
 
 const getTours = async (req, res, next) => {
-  const { min, max, ...others } = req.query;
   try {
-    const tours = await Tour.find({
-      ...others,
-      cheapestPrice: { $gt: min | 1, $lt: max || 999 },
-    }).limit(req.query.limit);
+    const { min, max, ...others } = req.query;
+    const query = {};
+
+    if (min || max) {
+      query.cheapestPrice = {};
+      if (min) query.cheapestPrice.$gt = parseInt(min);
+      if (max) query.cheapestPrice.$lt = parseInt(max);
+    }
+
+    const tours = await Tour.find({ ...others, ...query }).limit(req.query.limit || 0);
+
     res.status(200).json(tours);
   } catch (err) {
     next(err);
   }
 };
+
 
 const countByCategory = async (req, res, next)=>{
     try{

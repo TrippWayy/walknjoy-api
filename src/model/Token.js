@@ -3,14 +3,14 @@ const Schema = mongoose.Schema;
 const TokenSchema = new Schema({
     userId: {
         type: Schema.Types.ObjectId,
-        required: true,
+        require: true,
         trim: true,
         ref: "user",
         unique: true
     },
     tokenId: {
         type: String,
-        required: true,
+        require: true,
     },
     createdAt: {
         type: Date,

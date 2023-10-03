@@ -1,6 +1,5 @@
 const TourCompany = require("../model/TourCompany")
 const Tour = require("../model/Tour")
-const Hotel = require("../model/Hotel");
 
 const createCompany = async (req, res, next)=>{
     const newCompany = new TourCompany(req.body);
