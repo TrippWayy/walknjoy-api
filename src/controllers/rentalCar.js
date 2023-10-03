@@ -46,17 +46,24 @@ const getRental = async (req, res, next) => {
 };
 
 const getRentals = async (req, res, next) => {
-  const { min, max, ...others } = req.query;
   try {
-    const rentals = await RentalCar.find({
-      ...others,
-      raiting: { $gt: min | 1, $lt: max || 5 },
-    }).limit(req.query.limit);
+    const { min, max, ...others } = req.query;
+    const query = {};
+
+    if (min || max) {
+      query.raiting = {};
+      if (min) query.raiting.$gt = parseInt(min);
+      if (max) query.raiting.$lt = parseInt(max);
+    }
+
+    const rentals = await RentalCar.find({ ...others, ...query }).limit(req.query.limit || 0);
+
     res.status(200).json(rentals);
   } catch (err) {
     next(err);
   }
 };
+
 
 const addReview = async (req, res, next)=>{
   try{

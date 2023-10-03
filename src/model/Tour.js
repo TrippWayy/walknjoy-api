@@ -3,28 +3,28 @@ const mongoose = require("mongoose");
 const TourSchema = new mongoose.Schema({
     name: {
         type: String,
-        required: true,
+        require: true,
         trim: true
     },
     city:{
         type: String,
-        required: true
+        require: true
     },
     startDate: {
         type: Date,
-        required: true
+        require: true
     },
     finishDate: {
       type: Date,
-      required: true
+      require: true
     },
     companyAddress: {
         type: String,
-        required: true
+        require: true
     },
     price: {
         type: Number,
-        required: true
+        require: true
     },
     percent: {
         type: Number,
@@ -32,23 +32,23 @@ const TourSchema = new mongoose.Schema({
     },
     category: {
         type: String,
-        required: true
+        require: true
     },
     companyName: {
         type: String,
-        required: true
+        require: true
     },
     photos: {
         type: [String],
-        required: true
+        require: true
     },
     desc: {
         type: String,
-        required: true
+        require: true
     },
     featured: {
         type: Boolean,
-        required: true
+        require: true
     },
     placeCount: [{number: Number, unavailableDates: {type: [Date]}}]
 }, {timestamps: true, collection: "Tours"})

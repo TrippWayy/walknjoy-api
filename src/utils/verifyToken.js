@@ -50,4 +50,13 @@ const checkAdminLogin = async (req, res, next)=>{
   }
 }
 
-module.exports = {checkLogin, checkUnLogin, checkAdmin, checkAdminLogin}
+const checkEmployee = (req,res, next)=>{
+  if(req.user.isEmployee){
+    next()
+  }
+  else{
+    return next(createError(400, "Access for only employees!"))
+  }
+}
+
+module.exports = {checkLogin, checkUnLogin, checkAdmin, checkAdminLogin, checkEmployee}

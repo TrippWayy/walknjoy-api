@@ -3,11 +3,11 @@ const RoomSchema = new mongoose.Schema(
   {
     title: {
       type: String,
-      required: true,
+      require: true,
     },
     price: {
       type: Number,
-      required: true,
+      require: true,
     },
       percent: {
         type: Number,
@@ -15,11 +15,11 @@ const RoomSchema = new mongoose.Schema(
       },
     maxPeople: {
       type: Number,
-      required: true,
+      require: true,
     },
     desc: {
       type: String,
-      required: true,
+      require: true,
     },
     roomNumbers: [{ number: Number, unavailableDates: {type: [Date]}}],
   },
