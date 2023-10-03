@@ -82,7 +82,7 @@ app.use("/api/rooms", roomsRoute);
 app.use("/api/tours", tourRoute);
 app.use("/api/tour-companies", tourCompanies)
 app.use("/api/rental-car", rentalCar)
-app.use("/api/car", carRoute)
+app.use("/api/cars", carRoute)
 app.use("/api/collaborate", collaborateRoute)
 
 // Middleware for possible errors

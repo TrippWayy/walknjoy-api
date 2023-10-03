@@ -6,7 +6,8 @@ const CompanySchema = new mongoose.Schema({
         require: true
     },
     tours: {
-        type: [String]
+        type: [String],
+        default: []
     },
     address: {
         type: String,

@@ -1,10 +1,10 @@
 const router = require("express").Router();
 const {checkAdmin} = require("../utils/verifyToken")
-const {createTour, updateTour, deleteTour, getTour, updateTourAvailability, getTours, countByCategory, countByCity} = require("../controllers/tour")
+const {createTour, updateTour, deleteTour, getTour, updateTourAvailability, getTours, countByCategory, getToursByCompanyName, countByCity} = require("../controllers/tour")
 
 
 // CREATE
-router.post("/:companyid", checkAdmin, createTour)
+router.post("/:companyID", checkAdmin, createTour)
 // UPDATE
 router.put("/:id", checkAdmin, updateTour)
 // DELETE
@@ -16,5 +16,6 @@ router.get("/:id", getTour)
 router.get("/", getTours)
 router.get("/countByCategory", countByCategory)
 router.get("/countByCity", countByCity)
+router.get("/:companyID", getToursByCompanyName)
 
 module.exports = router;
