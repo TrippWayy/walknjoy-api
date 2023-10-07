@@ -19,11 +19,11 @@ router.put("/:id", checkAdmin, updateRental);
 //DELETE
 router.delete("/:id", checkAdmin, deleteRental);
 //GET
-router.get("/find/:id", checkLogin, getRental);
+router.get("/find/:id", getRental);
 //GET ALL
-router.get("/", checkLogin, getRentals);
-router.get("/countByCity", checkLogin, countByCity);
-router.get("/car/:id", checkLogin, getRentalCars);
+router.get("/", getRentals);
+router.get("/countByCity", countByCity);
+router.get("/car/:id", getRentalCars);
 router.post("/review/new/:rentalID", checkLogin, addReview)
 router.get("/reviews/:rentalID", checkAdmin, getReviews)
 

@@ -17,8 +17,8 @@ router.put("/:id", checkAdmin, updateRoom);
 //DELETE
 router.delete("/:id/:hotelID", checkAdmin, deleteRoom);
 //GET
-router.get("/:id", checkLogin, getRoom);
+router.get("/:id", getRoom);
 //GET ALL
-router.get("/", checkLogin, getRooms);
+router.get("/", getRooms);
 
 module.exports = router;

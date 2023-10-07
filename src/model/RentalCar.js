@@ -19,7 +19,7 @@ const RentalCarSchema = new mongoose.Schema({
         type: [String],
         default: []
     },
-    raiting: {
+    rating: {
         type: Number,
         min: 0,
         max: 5
