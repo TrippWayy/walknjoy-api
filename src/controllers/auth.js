@@ -160,4 +160,30 @@ const employeeLogin = async (req, res, next)=>{
       })(req, res, next);
 }
 
-module.exports = {register, login, logout, forgetPassword, resetPassword, resetProfilePassword, employeeLogin}
+const subscribe = async (req, res, next)=>{
+    const email = req.body.email
+    try{
+        const user = await User.findOne({email: email})
+        if(req.user.email == email && user.emailVerified && !user.isSubscriber){
+             const token = new Token({
+                userId: user._id,
+                tokenId: crypto.randomBytes(34).toString('hex'),
+              });
+              await token.save();
+              const url = `${process.env.BASE_URL}/api/verify/sub/${user._id}/${token.tokenId}`;
+            const options = {
+                email: user.email,
+                subject: 'Subscribe Email',
+                message: url,
+              };
+            await send.sendMail(options)
+            res.status(200).json({success: "To subscribe, verify link has been sent successfult to your mail!"})
+        }else{
+            return next(createError(400, "Please enter your mail that's you logged in with that"))
+        }
+    }catch (e) {
+        next(e)
+    }
+}
+
+module.exports = {register, login, logout, forgetPassword, resetPassword, resetProfilePassword, employeeLogin, subscribe}

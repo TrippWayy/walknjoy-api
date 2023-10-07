@@ -99,7 +99,30 @@ const getCars = async (req, res, next) => {
   }
 };
 
+const addReview = async (req, res, next)=>{
+  try{
+    const reviewData = {
+      username: req.user.username,
+      image: req.user.img,
+      review: req.body.review,
+    };
+    const car = await Car.findById(req.params.carID)
+    car.reviews.push({reviewData})
+    await car.save()
+    res.status(200).json({success: "Review has been added successfuly!"})
+  }catch (e) {
+    next(e)
+  }
+}
 
+const getReviews = async (req, res, next)=>{
+    try{
+        const car = await Car.findById(req.params.carID)
+        res.status(200).json({reviews: car.reviews, count: car.reviews.length})
+    }catch (e) {
+        next(e)
+    }
+}
 
 
 module.exports = {
@@ -109,4 +132,6 @@ module.exports = {
     getCar,
     getCars,
     updateCarAvailability,
+    getReviews,
+    addReview
 }

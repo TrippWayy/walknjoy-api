@@ -16,11 +16,11 @@ router.put("/:id", checkAdmin, updateCompany)
 // DELETE
 router.delete("/:id", checkAdmin, deleteCompany)
 // GET
-router.delete("/find/:id", getCompany)
+router.delete("/find/:id", checkLogin, getCompany)
 // GET ALL
-router.get("/", getCompanies)
-router.get("/tour/:id", getCompanyTours)
+router.get("/", checkLogin, getCompanies)
+router.get("/tour/:id", checkLogin, getCompanyTours)
 router.post("/review/new/:companyID", checkLogin, addReview)
-router.get("/reviews/:companyID", getReviews)
+router.get("/reviews/:companyID", checkAdmin, getReviews)
 
 module.exports = router;
