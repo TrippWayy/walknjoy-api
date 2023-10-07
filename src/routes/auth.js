@@ -1,5 +1,5 @@
 const router = require("express").Router();
-const { register, google, googleCallback, login, logout, forgetPassword, resetPassword, resetProfilePassword, employeeLogin} = require("../controllers/auth")
+const { register, google, googleCallback, subscribe, login, logout, forgetPassword, resetPassword, resetProfilePassword, employeeLogin} = require("../controllers/auth")
 const validateFields = require("../utils/validateFields");
 const {checkLogin, checkUnLogin,checkAdminLogin, checkEmployee} = require("../utils/verifyToken")
 const upload = require("../middlewares/multer")
@@ -12,7 +12,7 @@ router.post("/logout", checkLogin, logout)
 router.post("/forgot-password", checkUnLogin, forgetPassword)
 router.post("/user/reset-password", checkUnLogin, resetPassword)
 router.post("/user/profile/reset-password", checkLogin, resetProfilePassword)
-
+router.post("/subscribe", checkLogin, subscribe)
 
 router.post("/employee/login", employeeLogin)
 

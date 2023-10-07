@@ -46,6 +46,20 @@ const TourSchema = new mongoose.Schema({
         type: Boolean,
         require: true
     },
+    reviews: [
+    {
+      reviewData: {
+        username: String,
+        image: String,
+        review: String,
+      },
+    },
+  ],
+    raiting: {
+      type: Number,
+      min: 0,
+      max: 5
+    },
     placeNumber: [{ number: Number, unavailableDates: {type: [Date]}}],
 }, {timestamps: true, collection: "Tours"})
 

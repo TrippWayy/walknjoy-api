@@ -110,6 +110,30 @@ const countByCategory = async (req, res, next)=>{
     }
 }
 
+const getReviews = async (req, res, next)=>{
+    try{
+        const tour = await Tour.findById(req.params.tourID)
+        res.status(200).json({reviews: tour.reviews, count: tour.reviews.length})
+    }catch (e) {
+        next(e)
+    }
+}
+
+const addReview = async (req, res, next)=>{
+  try{
+    const reviewData = {
+      username: req.user.username,
+      image: req.user.img,
+      review: req.body.review,
+    };
+    const tour = await Tour.findById(req.params.tourID)
+    tour.reviews.push({reviewData})
+    await tour.save()
+    res.status(200).json({success: "Review has been added successfuly!"})
+  }catch (e) {
+    next(e)
+  }
+}
 const countByCity = async (req, res, next)=>{
   const cities = req.query.cities.split(",");
   try {
@@ -144,5 +168,7 @@ module.exports = {
     countByCategory,
     updateTourAvailability,
     countByCity,
-    getToursByCompanyName
+    getToursByCompanyName,
+    getReviews,
+    addReview
 }

@@ -7,7 +7,7 @@ const {
   updateRoom,
   updateRoomAvailability,
 } = require("../controllers/room");
-const { checkAdmin } = require("../utils/verifyToken");
+const { checkAdmin, checkLogin} = require("../utils/verifyToken");
 
 //CREATE
 router.post("/:hotelid", checkAdmin, createRoom);
@@ -17,8 +17,8 @@ router.put("/:id", checkAdmin, updateRoom);
 //DELETE
 router.delete("/:id/:hotelID", checkAdmin, deleteRoom);
 //GET
-router.get("/:id", getRoom);
+router.get("/:id", checkLogin, getRoom);
 //GET ALL
-router.get("/", getRooms);
+router.get("/", checkLogin, getRooms);
 
 module.exports = router;

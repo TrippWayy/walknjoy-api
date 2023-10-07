@@ -44,6 +44,10 @@ const UserSchema = new mongoose.Schema(
       isEmployee: {
         type: Boolean,
           default: false
+      },
+      isSubscriber: {
+        type: Boolean,
+          default: false
       }
   },
   { timestamps: true , collection: "Users"}

@@ -7,7 +7,8 @@ const {
   updateCar,
   updateCarAvailability,
 } = require("../controllers/car");
-const { checkAdmin } = require("../utils/verifyToken");
+const { checkAdmin, checkLogin} = require("../utils/verifyToken");
+const {addReview, getReviews} = require("../controllers/car");
 
 //CREATE
 router.post("/:rentalID", checkAdmin, createCar);
@@ -17,8 +18,11 @@ router.put("/:id", checkAdmin, updateCar);
 //DELETE
 router.delete("/:id/:rentalID", checkAdmin, deleteCar);
 //GET
-router.get("/:id", getCar);
+router.get("/:id", checkLogin, getCar);
 //GET ALL
-router.get("/", getCars);
+router.get("/",checkLogin, getCars);
+
+router.post("/review/new/:carID", checkLogin, addReview)
+router.get("/reviews/:carID", checkAdmin, getReviews)
 
 module.exports = router;
