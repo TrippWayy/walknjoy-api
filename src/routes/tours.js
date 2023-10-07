@@ -15,11 +15,11 @@ router.put("/availability/:id", updateTourAvailability)
 // GET
 router.get("/:id", getTour)
 // GET ALL
-router.get("/", checkLogin, getTours)
-router.get("/countByCategory", checkLogin, countByCategory)
-router.get("/countByCity", checkLogin, countByCity)
+router.get("/", getTours)
+router.get("/countByCategory", countByCategory)
+router.get("/countByCity", countByCity)
 router.get("/reviews/:tourID", checkAdmin, getReviews)
 router.post("/review/new/:tourID", checkLogin, addReview)
-router.get("/:companyID", checkLogin, getToursByCompanyName)
+router.get("/:companyID", getToursByCompanyName)
 
 module.exports = router;

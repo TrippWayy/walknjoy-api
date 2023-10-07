@@ -18,9 +18,9 @@ router.put("/:id", checkAdmin, updateCar);
 //DELETE
 router.delete("/:id/:rentalID", checkAdmin, deleteCar);
 //GET
-router.get("/:id", checkLogin, getCar);
+router.get("/:id", getCar);
 //GET ALL
-router.get("/",checkLogin, getCars);
+router.get("/", getCars);
 
 router.post("/review/new/:carID", checkLogin, addReview)
 router.get("/reviews/:carID", checkAdmin, getReviews)

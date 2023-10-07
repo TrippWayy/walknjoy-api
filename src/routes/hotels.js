@@ -20,12 +20,12 @@ router.put("/:id", checkAdmin, updateHotel);
 //DELETE
 router.delete("/:id", checkAdmin, deleteHotel);
 //GET
-router.get("/find/:id", checkLogin, getHotel);
+router.get("/find/:id", getHotel);
 //GET ALL
-router.get("/", checkLogin, getHotels);
-router.get("/countByCity",checkLogin, countByCity);
-router.get("/countByType",checkLogin, countByType);
-router.get("/room/:id", checkLogin, getHotelRooms);
+router.get("/", getHotels);
+router.get("/countByCity", countByCity);
+router.get("/countByType", countByType);
+router.get("/room/:id", getHotelRooms);
 router.post("/review/new/:hotelID", checkLogin, addReview)
 router.get("/reviews/:hotelID", checkAdmin, getReviews)
 

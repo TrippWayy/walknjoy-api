@@ -16,10 +16,10 @@ router.put("/:id", checkAdmin, updateCompany)
 // DELETE
 router.delete("/:id", checkAdmin, deleteCompany)
 // GET
-router.delete("/find/:id", checkLogin, getCompany)
+router.delete("/find/:id", getCompany)
 // GET ALL
-router.get("/", checkLogin, getCompanies)
-router.get("/tour/:id", checkLogin, getCompanyTours)
+router.get("/", getCompanies)
+router.get("/tour/:id", getCompanyTours)
 router.post("/review/new/:companyID", checkLogin, addReview)
 router.get("/reviews/:companyID", checkAdmin, getReviews)
 
