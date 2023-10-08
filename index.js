@@ -100,10 +100,6 @@ app.use((err, req, res, next) => {
   });
 });
 
-app.get("/", (req, res, next)=>{
-    res.render("emailVerifiedPage")
-})
-
 const PORT = process.env.PORT || 3000
 
 app.listen(PORT, async ()=>{
