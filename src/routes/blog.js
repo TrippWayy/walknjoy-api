@@ -2,9 +2,10 @@ const router = require("express").Router()
 const {createBlog, deleteBlog, getBlogs, getBlog} = require("../controllers/blog")
 const {checkAdmin, checkLogin} = require("../utils/verifyToken")
 const {addReview, getReviews} = require("../controllers/blog");
+const cronMiddleware = require("../middlewares/cronMiddleware")
 
 // CREATE
-router.post("/", checkAdmin, createBlog)
+router.post("/", checkAdmin, cronMiddleware.cronRun, createBlog)
 router.delete("/:blogID", checkAdmin, deleteBlog)
 
 // GET
