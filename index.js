@@ -59,7 +59,11 @@ app.use(
 );
 
 // Middlewares
-app.use(cors({credentials: true}))
+const corsOptions = {
+  origin: 'https://tripway-app.onrender.com',
+};
+
+app.use(cors(corsOptions));
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded())
