@@ -40,7 +40,7 @@ const HotelSchema = new mongoose.Schema({
     min: 0,
     max: 5,
   },
-  viewedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+  viewedUsers: [String],
   rooms: {
     type: [String],
     default: []

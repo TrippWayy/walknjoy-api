@@ -10,7 +10,7 @@ router.delete("/:blogID", checkAdmin, deleteBlog)
 
 // GET
 router.get("/", checkLogin, getBlogs)
-router.get("/:blogID", checkLogin, getBlog)
+router.get("/:blogID", getBlog)
 
 router.post("/review/new/:blogID", checkLogin, addReview)
 router.get("/reviews/:blogID", checkAdmin, getReviews)

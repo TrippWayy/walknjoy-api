@@ -13,7 +13,7 @@ const RoomSchema = new mongoose.Schema(
         type: Number,
           default: 0
       },
-     viewedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+     viewedUsers: [String],
     maxPeople: {
       type: Number,
       require: true,

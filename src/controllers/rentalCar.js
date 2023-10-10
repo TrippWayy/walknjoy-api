@@ -2,6 +2,8 @@ const RentalCar = require("../model/RentalCar");
 const Car = require("../model/Car")
 const Hotel = require("../model/Hotel");
 const Room = require("../model/Room");
+const Blog = require("../model/Blog");
+const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
 
 const createRental = async (req, res, next) => {
   const newHotel = new RentalCar(req.body);
@@ -37,15 +39,22 @@ const deleteRental = async (req, res, next) => {
 };
 
 const getRental = async (req, res, next) => {
-  try {
-    const rental = await RentalCar.findById(req.params.id);
-    if (!rental.viewedUsers.includes(req.user._id)) {
-          rental.viewedUsers.push(req.user._id);
-          await rental.save();
-        }
-    res.status(200).json(rental);
-  } catch (err) {
-    next(err);
+try {
+    const rental = await RentalCar.findById(req.params.rentalID);
+    const userIdentifier = req.cookies['uniqueViewer'];
+
+    if (!userIdentifier) {
+      const newIdentifier = generateUniqueIdentifier();
+      if (!rental.viewedUsers.includes(newIdentifier)) {
+        res.cookie('uniqueViewer', newIdentifier, { maxAge: 31536000000 });
+        rental.viewedUsers.push(newIdentifier);
+        await rental.save();
+      }
+    }
+
+    res.json(rental);
+  } catch (error) {
+    next(error);
   }
 };
 

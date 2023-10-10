@@ -1,6 +1,8 @@
 const Room = require("../model/Room");
 const Hotel = require("../model/Hotel");
 const {createError} = require("../utils/error");
+const Blog = require("../model/Blog");
+const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
 
 const createRoom = async (req, res, next) => {
   const hotelID = req.params.hotelID;
@@ -65,15 +67,22 @@ const deleteRoom = async (req, res, next) => {
   }
 };
 const getRoom = async (req, res, next) => {
-  try {
+try {
     const room = await Room.findById(req.params.roomID);
-    if (!room.viewedUsers.includes(req.user._id)) {
-          room.viewedUsers.push(req.user._id);
-          await room.save();
-        }
-    res.status(200).json(room);
-  } catch (err) {
-    next(err);
+    const userIdentifier = req.cookies['uniqueViewer'];
+
+    if (!userIdentifier) {
+      const newIdentifier = generateUniqueIdentifier();
+      if (!room.viewedUsers.includes(newIdentifier)) {
+        res.cookie('uniqueViewer', newIdentifier, { maxAge: 31536000000 });
+        room.viewedUsers.push(newIdentifier);
+        await room.save();
+      }
+    }
+
+    res.json(room);
+  } catch (error) {
+    next(error);
   }
 };
 const getRooms = async (req, res, next) => {
