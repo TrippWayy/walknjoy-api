@@ -61,7 +61,7 @@ app.use(
 // Middlewares
 app.use(
   cors({
-    origin: [`http://localhost:5173`, `https://tripway-app.onrender.com/`],
+    origin: [`http://localhost:3001`, `https://tripway-app.onrender.com/`],
     credentials: true,
   })
 );
@@ -105,7 +105,7 @@ app.use((err, req, res, next) => {
   });
 });
 
-const PORT = 3001
+const PORT = process.env.PORT || 3000
 
 app.listen(PORT, async ()=>{
     connect();

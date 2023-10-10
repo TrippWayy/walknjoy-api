@@ -69,7 +69,11 @@ const deleteTour = async (req, res, next)=>{
 
 const getTour = async (req, res, next) => {
   try {
-    const tour = await Tour.findById(req.params.id);
+    const tour = await Tour.findById(req.params.tourID);
+    if (!tour.viewedUsers.includes(req.user._id)) {
+          tour.viewedUsers.push(req.user._id);
+          await tour.save();
+        }
     res.status(200).json(tour);
   } catch (err) {
     next(err);

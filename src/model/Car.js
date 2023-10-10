@@ -14,6 +14,7 @@ const CarSchema = new mongoose.Schema({
     type: Number,
     require: true,
   },
+  viewedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
   photos: {
     type: [String],
     require: true

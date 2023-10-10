@@ -33,6 +33,11 @@ const getBlogs = async (req, res, next)=>{
 const getBlog = async (req, res, next)=>{
     try{
         const blog = await Blog.findById(req.params.blogID)
+        // Check if the user's ID is not already in the viewedUsers array
+        if (!blog.viewedUsers.includes(req.user._id)) {
+          blog.viewedUsers.push(req.user._id);
+          await blog.save();
+        }
         res.status(200).json(blog)
     }catch (e) {
         next(e)
