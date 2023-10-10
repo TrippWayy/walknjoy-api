@@ -15,7 +15,7 @@ const RentalCarSchema = new mongoose.Schema({
     city:{
       type: String
     },
-    viewedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    viewedUsers: [String],
     cars: {
         type: [String],
         default: []

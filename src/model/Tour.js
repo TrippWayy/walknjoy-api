@@ -46,7 +46,7 @@ const TourSchema = new mongoose.Schema({
         type: Boolean,
         require: true
     },
-    viewedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
+    viewedUsers: [String],
     reviews: [
     {
       reviewData: {
