@@ -69,6 +69,10 @@ const deleteCar = async (req, res, next)=>{
 const getCar = async (req, res, next) => {
   try {
     const car = await Car.findById(req.params.id);
+    if (!car.viewedUsers.includes(req.user._id)) {
+          car.viewedUsers.push(req.user._id);
+          await car.save();
+        }
     res.status(200).json(car);
   } catch (err) {
     next(err);

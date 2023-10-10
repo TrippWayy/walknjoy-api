@@ -37,6 +37,10 @@ const deleteHotel = async (req, res, next) => {
 const getHotel = async (req, res, next) => {
   try {
     const hotel = await Hotel.findById(req.params.id);
+    if (!hotel.viewedUsers.includes(req.user._id)) {
+          hotel.viewedUsers.push(req.user._id);
+          await hotel.save();
+        }
     res.status(200).json(hotel);
   } catch (err) {
     next(err);

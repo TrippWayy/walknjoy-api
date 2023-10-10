@@ -39,6 +39,10 @@ const deleteRental = async (req, res, next) => {
 const getRental = async (req, res, next) => {
   try {
     const rental = await RentalCar.findById(req.params.id);
+    if (!rental.viewedUsers.includes(req.user._id)) {
+          rental.viewedUsers.push(req.user._id);
+          await rental.save();
+        }
     res.status(200).json(rental);
   } catch (err) {
     next(err);

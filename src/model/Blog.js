@@ -13,6 +13,7 @@ const BlogSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    viewedUsers: [{ type: mongoose.Schema.Types.ObjectId, ref: 'User' }],
     reviews: [
     {
       reviewData: {

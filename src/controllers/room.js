@@ -3,13 +3,13 @@ const Hotel = require("../model/Hotel");
 const {createError} = require("../utils/error");
 
 const createRoom = async (req, res, next) => {
-  const hotelId = req.params.hotelid;
+  const hotelID = req.params.hotelID;
   const newRoom = new Room(req.body);
 
   try {
     const savedRoom = await newRoom.save();
     try {
-      await Hotel.findByIdAndUpdate(hotelId, {
+      await Hotel.findByIdAndUpdate(hotelID, {
         $push: { rooms: savedRoom._id },
       });
     } catch (err) {
@@ -66,7 +66,11 @@ const deleteRoom = async (req, res, next) => {
 };
 const getRoom = async (req, res, next) => {
   try {
-    const room = await Room.findById(req.params.id);
+    const room = await Room.findById(req.params.roomID);
+    if (!room.viewedUsers.includes(req.user._id)) {
+          room.viewedUsers.push(req.user._id);
+          await room.save();
+        }
     res.status(200).json(room);
   } catch (err) {
     next(err);

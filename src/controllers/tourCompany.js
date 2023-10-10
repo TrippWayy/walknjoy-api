@@ -35,7 +35,11 @@ const deleteCompany = async (req, res, next)=>{
 
 const getCompany = async (req, res, next)=>{
     try{
-        const company = await TourCompany.findById(req.params.id)
+        const company = await TourCompany.findById(req.params.companyID)
+        if (!company.viewedUsers.includes(req.user._id)) {
+          company.viewedUsers.push(req.user._id);
+          await company.save();
+        }
         res.status(200).json(company)
     }catch (err) {
         next(err)

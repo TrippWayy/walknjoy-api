@@ -7,7 +7,6 @@ const cron = require("node-cron");
 const sendEmailOnChange = () => {
   Blog.watch().on('change', async (change) => {
     if (change.operationType === 'insert') {
-      console.log("Değişiklik algılandı");
       const users = await User.find({ isSubscriber: true });
       const newBlog = change.fullDocument;
       users.forEach(user => {
