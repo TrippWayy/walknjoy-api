@@ -10,6 +10,18 @@ const CarSchema = new mongoose.Schema({
     type: String,
     require: true,
   },
+  city: {
+   type: String
+ },
+  km: {
+    type: Number
+  },
+  motorType: {
+    type: String
+  },
+  speedBox: {
+    type: String
+  },
   year: {
     type: Number,
     require: true,
