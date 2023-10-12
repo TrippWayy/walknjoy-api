@@ -23,6 +23,7 @@ const rentalCar = require("./src/routes/rentalCar")
 const carRoute = require("./src/routes/car")
 const collaborateRoute = require("./src/routes/collaborate")
 const blogRoute = require("./src/routes/blog")
+const generalProductRoute = require("./src/routes/generalProduct")
 
 const app = express()
 dotenv.config()
@@ -91,6 +92,7 @@ app.use("/api/rental-car", rentalCar)
 app.use("/api/cars", carRoute)
 app.use("/api/collaborate", collaborateRoute)
 app.use("/api/blogs", blogRoute)
+app.use("/general/products", generalProductRoute)
 
 // Middleware for possible errors
 app.use((err, req, res, next) => {
