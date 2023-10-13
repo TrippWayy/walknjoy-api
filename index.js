@@ -92,7 +92,7 @@ app.use("/api/rental-car", rentalCar)
 app.use("/api/cars", carRoute)
 app.use("/api/collaborate", collaborateRoute)
 app.use("/api/blogs", blogRoute)
-app.use("/general/products", generalProductRoute)
+app.use("/api/general/products", generalProductRoute)
 
 // Middleware for possible errors
 app.use((err, req, res, next) => {
