@@ -60,32 +60,23 @@ const countByCity = async (req, res, next) => {
   "Zardab"
 ];
 
-    const hotelCount = await Promise.all(
-      regionsOfAzerbaijan.map(async (city) => {
-        const count = await Hotel.countDocuments({ city: city }).lean();
-        return { city, count };
-      })
-    );
+    const countPromises = regionsOfAzerbaijan.map(async (city) => ({
+      city,
+      hotels: Hotel.countDocuments({ city }).lean().exec(), // Execute the query
+      tours: Tour.countDocuments({ city }).lean().exec(), // Execute the query
+      cars: Car.countDocuments({ city }).lean().exec(), // Execute the query
+    }));
 
-    const tourCount = await Promise.all(
-      regionsOfAzerbaijan.map(async (city) => {
-        const count = await Tour.countDocuments({ city: city }).lean();
-        return { city, count };
-      })
-    );
+    const counts = await Promise.all(countPromises);
 
-    const carCount = await Promise.all(
-      regionsOfAzerbaijan.map(async (city) => {
-        const count = await Car.countDocuments({ city: city }).lean();
-        return { city, count };
-      })
-    );
+    // Wait for all the query executions to complete
+    await Promise.all(counts.map(async (countObject) => {
+      countObject.hotels = await countObject.hotels;
+      countObject.tours = await countObject.tours;
+      countObject.cars = await countObject.cars;
+    }));
 
-    res.status(200).json({
-      hotels: hotelCount,
-      tours: tourCount,
-      cars: carCount
-    });
+    res.status(200).json({ counts });
   } catch (err) {
     next(err);
   }
