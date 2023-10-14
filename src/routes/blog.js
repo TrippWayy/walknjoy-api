@@ -11,7 +11,7 @@ router.post("/", checkAdmin, cronMiddleware.cronRun, upload.single('img'), cloud
 router.delete("/:blogID", checkAdmin, deleteBlog)
 
 // GET
-router.get("/", checkLogin, getBlogs)
+router.get("/", getBlogs)
 router.get("/:blogID", getBlog)
 
 router.post("/review/new/:blogID", checkLogin, addReview)
