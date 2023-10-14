@@ -3,7 +3,6 @@ const {createBlog, deleteBlog, getBlogs, getBlog} = require("../controllers/blog
 const {checkAdmin, checkLogin} = require("../utils/verifyToken")
 const {addReview, getReviews} = require("../controllers/blog");
 const cronMiddleware = require("../middlewares/cronMiddleware")
-const multer = require("../middlewares/multer")
 const upload = require("../middlewares/multer");
 const cloudinary = require("../middlewares/cloudinary");
 
