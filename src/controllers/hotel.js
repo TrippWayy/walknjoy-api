@@ -58,7 +58,8 @@ try {
 
 const getHotels = async (req, res, next) => {
   try {
-    const { min, max, ...others } = req.query;
+    const { min, max, city, ...others } = req.query;
+
     const query = {};
 
     if (min || max) {
@@ -67,7 +68,7 @@ const getHotels = async (req, res, next) => {
       if (max) query.price.$lt = parseInt(max);
     }
 
-    const hotels = await Hotel.find({ ...others, ...query }).limit(req.query.limit || 0);
+    const hotels = await Hotel.find({ ...others, ...query, city }).limit(req.query.limit || 0);
 
     res.status(200).json(hotels);
   } catch (err) {
