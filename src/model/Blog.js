@@ -13,6 +13,9 @@ const BlogSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    city: {
+      type: String
+    },
     viewedUsers: [String],
     reviews: [
     {
