@@ -6,11 +6,11 @@ const {addReview} = require("../controllers/tour");
 
 
 // CREATE
-router.post("/:companyID", checkAdmin, createTour)
+router.post("/admin/:companyID", checkAdmin, createTour)
 // UPDATE
-router.put("/:id", checkAdmin, updateTour)
+router.put("/admin/:id", checkAdmin, updateTour)
 // DELETE
-router.delete("/:id/:companyid", checkAdmin, deleteTour)
+router.delete("/admin/:id/:companyid", checkAdmin, deleteTour)
 router.put("/availability/:id", updateTourAvailability)
 // GET
 router.get("/:tourID", getTour)
@@ -18,7 +18,7 @@ router.get("/:tourID", getTour)
 router.get("/", getTours)
 router.get("/countByCategory", countByCategory)
 router.get("/countByCity", countByCity)
-router.get("/reviews/:tourID", checkAdmin, getReviews)
+router.get("/reviews/:tourID", getReviews)
 router.post("/review/new/:tourID", checkLogin, addReview)
 router.get("/:companyID", getToursByCompanyName)
 

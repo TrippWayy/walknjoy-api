@@ -10,17 +10,17 @@ const {createCompany,
         getReviews} = require("../controllers/tourCompany")
 
 // CREATE
-router.post("/", checkAdmin, createCompany)
+router.post("/admin/", checkAdmin, createCompany)
 // UPDATE
-router.put("/:id", checkAdmin, updateCompany)
+router.put("/admin/:id", checkAdmin, updateCompany)
 // DELETE
-router.delete("/:id", checkAdmin, deleteCompany)
+router.delete("/admin/:id", checkAdmin, deleteCompany)
 // GET
 router.delete("/find/:companyID", getCompany)
 // GET ALL
 router.get("/", getCompanies)
 router.get("/tour/:id", getCompanyTours)
 router.post("/review/new/:companyID", checkLogin, addReview)
-router.get("/reviews/:companyID", checkAdmin, getReviews)
+router.get("/reviews/:companyID", getReviews)
 
 module.exports = router;
