@@ -10,12 +10,12 @@ const {
 const { checkAdmin, checkLogin} = require("../utils/verifyToken");
 
 //CREATE
-router.post("/:hotelID", checkAdmin, createRoom);
+router.post("/admin/:hotelID", checkAdmin, createRoom);
 //UPDATE
 router.put("/availability/:id", updateRoomAvailability);
-router.put("/:id", checkAdmin, updateRoom);
+router.put("/admin/:id", checkAdmin, updateRoom);
 //DELETE
-router.delete("/:id/:hotelID", checkAdmin, deleteRoom);
+router.delete("/admin/:id/:hotelID", checkAdmin, deleteRoom);
 //GET
 router.get("/:roomID", getRoom);
 //GET ALL

@@ -11,18 +11,18 @@ const { checkAdmin, checkLogin} = require("../utils/verifyToken");
 const {addReview, getReviews} = require("../controllers/car");
 
 //CREATE
-router.post("/:rentalID", checkAdmin, createCar);
+router.post("/admin/:rentalID", checkAdmin, createCar);
 //UPDATE
 router.put("/availability/:id", updateCarAvailability);
-router.put("/:id", checkAdmin, updateCar);
+router.put("/admin/:id", checkAdmin, updateCar);
 //DELETE
-router.delete("/:id/:rentalID", checkAdmin, deleteCar);
+router.delete("/admin/:id/:rentalID", checkAdmin, deleteCar);
 //GET
 router.get("/:carID", getCar);
 //GET ALL
 router.get("/", getCars);
 
 router.post("/review/new/:carID", checkLogin, addReview)
-router.get("/reviews/:carID", checkAdmin, getReviews)
+router.get("/reviews/:carID", getReviews)
 
 module.exports = router;

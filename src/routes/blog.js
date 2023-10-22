@@ -7,14 +7,14 @@ const upload = require("../middlewares/multer");
 const cloudinary = require("../middlewares/cloudinary");
 
 // CREATE
-router.post("/", checkAdmin, cronMiddleware.cronRun, upload.single('img'), cloudinary.uploadCloud, createBlog)
-router.delete("/:blogID", checkAdmin, deleteBlog)
+router.post("/admin", checkAdmin, cronMiddleware.cronRun, upload.single('img'), cloudinary.uploadCloud, createBlog)
+router.delete("/admin/:blogID", checkAdmin, deleteBlog)
 
 // GET
-router.get("/", checkLogin, getBlogs)
+router.get("/", getBlogs)
 router.get("/:blogID", getBlog)
 
 router.post("/review/new/:blogID", checkLogin, addReview)
-router.get("/reviews/:blogID", checkAdmin, getReviews)
+router.get("/reviews/:blogID", getReviews)
 
 module.exports = router;
