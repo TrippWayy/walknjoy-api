@@ -30,50 +30,50 @@ const app = express()
 dotenv.config()
 
 // DB connection
-const connect = async ()=>{
+const connect = async () => {
     try {
         await mongoose.connect(process.env.DB_URL);
         console.log("Connected to mongoDB.");
-  } catch (error) {
+    } catch (error) {
         throw error;
-  }
+    }
 };
 
 
 // Configure session store
 const sessionStore = new MongoStore({
-  uri: process.env.DB_URL,
-  collection: 'Sessions', // Replace with your session collection name
+    uri: process.env.DB_URL,
+    collection: 'Sessions', // Replace with your session collection name
 });
 
 // Set up session middleware
 app.use(
-  session({
-    secret: process.env.SESSION_SECRET,
-    resave: false,
-    saveUninitialized: true,
-    store: sessionStore,
-    cookie: {
-      maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds (adjust as needed)
-      httpOnly: true,
-    },
-  })
+    session({
+        secret: process.env.SESSION_SECRET,
+        resave: false,
+        saveUninitialized: true,
+        store: sessionStore,
+        cookie: {
+            maxAge: 30 * 24 * 60 * 60 * 1000, // 30 days in milliseconds (adjust as needed)
+            httpOnly: true,
+        },
+    })
 );
 
 // Middlewares
 app.use(
-  cors({
-    origin: [`http://localhost:3001`, `https://tripway-app.onrender.com/`],
-    credentials: true,
-  })
+    cors({
+        origin: [`http://localhost:3001`, `https://tripway-app.onrender.com/`],
+        credentials: true,
+    })
 );
 app.use(cookieParser())
 app.use(express.json())
 app.use(express.urlencoded())
 app.use(
-  bodyParser.urlencoded({
-    extended: true,
-  })
+    bodyParser.urlencoded({
+        extended: true,
+    })
 );
 app.use(passport.initialize())
 app.use(passport.session())
@@ -98,20 +98,20 @@ app.use("/api/general/products", generalProductRoute)
 
 // Middleware for possible errors
 app.use((err, req, res, next) => {
-  const errorStatus = err.status || 500;
-  const errorMessage = err.message || "Something went wrong!";
-  return res.status(errorStatus).json({
-    success: false,
-    status: errorStatus,
-    error: errorMessage,
-    stack: err.stack,
-      error: err
-  });
+    const errorStatus = err.status || 500;
+    const errorMessage = err.message || "Something went wrong!";
+    return res.status(errorStatus).json({
+        success: false,
+        status: errorStatus,
+        error: errorMessage,
+        stack: err.stack,
+        error: err
+    });
 });
 
 const PORT = process.env.PORT || 3000
 
-app.listen(PORT, async ()=>{
+app.listen(PORT, async () => {
     connect();
     console.log("Connected to backend: " + PORT)
 })

@@ -1,13 +1,13 @@
 const router = require("express").Router();
 const {
-  createCar,
-  deleteCar,
-  getCar,
-  getCars,
-  updateCar,
-  updateCarAvailability,
+    createCar,
+    deleteCar,
+    getCar,
+    getCars,
+    updateCar,
+    updateCarAvailability,
 } = require("../controllers/car");
-const { checkAdmin, checkLogin} = require("../utils/verifyToken");
+const {checkAdmin, checkLogin} = require("../utils/verifyToken");
 const {addReview, getReviews} = require("../controllers/car");
 
 //CREATE
