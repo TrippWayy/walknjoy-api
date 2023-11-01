@@ -3,103 +3,102 @@ const Tour = require("../model/Tour")
 const Blog = require("../model/Blog");
 const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
 
-const createCompany = async (req, res, next)=>{
+const createCompany = async (req, res, next) => {
     const newCompany = new TourCompany(req.body);
-    try{
+    try {
         const savedCompany = await newCompany.save()
         res.status(200).json(savedCompany)
-    }catch (err) {
+    } catch (err) {
         next(err)
     }
 }
 
-const updateCompany = async (req, res, next)=>{
-    try{
+const updateCompany = async (req, res, next) => {
+    try {
         const updatedCompany = await TourCompany.findByIdAndUpdate(
             req.params.id,
             {$set: req.body},
             {new: true}
         )
         res.status(200).json(updatedCompany)
-    }catch (err) {
+    } catch (err) {
         next(err)
     }
 }
 
-const deleteCompany = async (req, res, next)=>{
-    try{
-       await TourCompany.findByIdAndDelete(req.params.id);
-       res.status(200).json("Tour company has been deleted.")
-    }catch (err) {
+const deleteCompany = async (req, res, next) => {
+    try {
+        await TourCompany.findByIdAndDelete(req.params.id);
+        res.status(200).json("Tour company has been deleted.")
+    } catch (err) {
         next(err)
     }
 }
 
-const getCompany = async (req, res, next)=>{
-try {
-    const company = await TourCompany.findById(req.params.companyID);
-    const userIdentifier = req.cookies['uniqueViewer'];
+const getCompany = async (req, res, next) => {
+    try {
+        const company = await TourCompany.findById(req.params.companyID);
+        const userIdentifier = req.cookies['uniqueViewer'];
 
-    if (!userIdentifier) {
-      const newIdentifier = generateUniqueIdentifier();
-      if (!company.viewedUsers.includes(newIdentifier)) {
-        res.cookie('uniqueViewer', newIdentifier, { maxAge: 31536000000 });
-        company.viewedUsers.push(newIdentifier);
-        await company.save();
-      }
+        if (!userIdentifier) {
+            const newIdentifier = generateUniqueIdentifier();
+            if (!company.viewedUsers.includes(newIdentifier)) {
+                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
+                company.viewedUsers.push(newIdentifier);
+                await company.save();
+            }
+        }
+
+        res.json(company);
+    } catch (error) {
+        next(error);
     }
-
-    res.json(company);
-  } catch (error) {
-    next(error);
-  }
 }
 
-const getCompanies = async (req, res, next)=>{
-    try{
+const getCompanies = async (req, res, next) => {
+    try {
         const companies = await TourCompany.find({})
         res.status(200).json(companies)
-    }
-    catch (err) {
+    } catch (err) {
         next(err)
     }
 }
 
-const getCompanyTours = async (req, res, next)=>{
-    try{
+const getCompanyTours = async (req, res, next) => {
+    try {
         const company = await TourCompany.findById(req.params.id)
         const list = await Promise.all(
-            company.tours.map((tour)=>{
+            company.tours.map((tour) => {
                 return Tour.findById(tour)
             })
         )
         res.status(200).json(list)
-    }catch (err) {
+    } catch (err) {
         next(err)
     }
 }
 
-const addReview = async (req, res, next)=>{
-  try{
-    const reviewData = {
-      username: req.user.username,
-      image: req.user.img,
-      review: req.body.review,
-    };
-    const tourCompany = await TourCompany.findById(req.params.companyID)
-    tourCompany.reviews.push({reviewData})
-    await tourCompany.save()
-    res.status(200).json({success: "Review has been added successfuly!"})
-  }catch (e) {
-    next(e)
-  }
+const addReview = async (req, res, next) => {
+    try {
+        const reviewData = {
+            username: req.user.username,
+            image: req.user.img,
+            review: req.body.review,
+        };
+        const tourCompany = await TourCompany.findById(req.params.companyID)
+        tourCompany.reviews.push({reviewData})
+        await tourCompany.save()
+        res.status(200).json({success: "Review has been added successfuly!"})
+    } catch (e) {
+        next(e)
+    }
 }
 
-const getReviews = async (req, res, next)=>{
-    try{
+const getReviews = async (req, res, next) => {
+    try {
         const company = await TourCompany.findById(req.params.companyID)
         res.status(200).json({reviews: company.reviews, count: company.reviews.length})
-    }catch (e) {
+    } catch (e) {
         next(e)
     }
 }

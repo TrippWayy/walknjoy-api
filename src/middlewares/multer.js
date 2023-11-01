@@ -3,18 +3,16 @@ const path = require("path")
 
 const storage = multer.diskStorage({
     destination: (req, file, cb) => {
-        if(req.body.email !== undefined){
+        if (req.body.email !== undefined) {
             cb(null, path.join(__dirname, "../uploads/avatars"));
-        }
-        else{
+        } else {
             cb(null, path.join(__dirname, "../uploads/blogs"));
         }
     },
     filename: (req, file, cb) => {
-        if(req.body.email !== undefined){
+        if (req.body.email !== undefined) {
             cb(null, req.body.email + "_pp")
-        }
-        else{
+        } else {
             cb(null, req.body.title + "_blog")
         }
     }

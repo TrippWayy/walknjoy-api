@@ -38,7 +38,7 @@ const EntertainmentSchema = new mongoose.Schema({
         min: 0,
         max: 5,
     },
-    placeNumber: [{ number: Number, unavailableDates: {type: [Date]}}],
+    placeNumber: [{number: Number, unavailableDates: {type: [Date]}}],
     reviews: [
         {
             reviewData: {

@@ -12,8 +12,8 @@ const RentalCarSchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    city:{
-      type: String
+    city: {
+        type: String
     },
     viewedUsers: [String],
     cars: {
@@ -26,14 +26,14 @@ const RentalCarSchema = new mongoose.Schema({
         max: 5
     },
     reviews: [
-    {
-      reviewData: {
-        username: String,
-        image: String,
-        review: String,
-      },
-    },
-  ],
+        {
+            reviewData: {
+                username: String,
+                image: String,
+                review: String,
+            },
+        },
+    ],
 }, {timestamps: true, collection: "CarRental"})
 
 const RentalCar = mongoose.model("CarRental", RentalCarSchema)

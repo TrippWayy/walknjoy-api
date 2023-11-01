@@ -22,20 +22,20 @@ const CompanySchema = new mongoose.Schema({
         require: true
     },
     rating: {
-    type: Number,
-    min: 0,
-    max: 5,
-  },
+        type: Number,
+        min: 0,
+        max: 5,
+    },
     viewedUsers: [String],
     reviews: [
-    {
-      reviewData: {
-        username: String,
-        image: String,
-        review: String,
-      },
-    },
-  ],
+        {
+            reviewData: {
+                username: String,
+                image: String,
+                review: String,
+            },
+        },
+    ],
 }, {timestamps: true, collection: "TourCompanies"})
 
 const TourCompany = mongoose.model("TourCompanies", CompanySchema)

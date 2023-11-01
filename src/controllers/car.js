@@ -3,136 +3,136 @@ const RentalCar = require("../model/RentalCar");
 const Blog = require("../model/Blog");
 const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
 
-const createCar = async (req, res, next)=>{
-      const rentalID = req.params.rentalID;
-      const newCar = new Car(req.body);
-      try {
+const createCar = async (req, res, next) => {
+    const rentalID = req.params.rentalID;
+    const newCar = new Car(req.body);
+    try {
         const savedCar = await newCar.save();
-        try{
+        try {
             await RentalCar.findByIdAndUpdate(rentalID, {
                 $push: {cars: savedCar._id}
             })
-        }catch (err) {
+        } catch (err) {
             next(err)
         }
         res.status(200).json(savedCar);
-      } catch (err) {
+    } catch (err) {
         next(err);
-      }
+    }
 }
 
-const updateCar = async (req, res, next)=>{
-  try {
-    const updatedCar = await Car.findByIdAndUpdate(
-      req.params.id,
-      { $set: req.body },
-      { new: true }
-    );
-    res.status(200).json(updatedCar);
-  } catch (err) {
-    next(err);
-  }
+const updateCar = async (req, res, next) => {
+    try {
+        const updatedCar = await Car.findByIdAndUpdate(
+            req.params.id,
+            {$set: req.body},
+            {new: true}
+        );
+        res.status(200).json(updatedCar);
+    } catch (err) {
+        next(err);
+    }
 }
 
-const updateCarAvailability = async (req, res, next)=>{
-      try {
+const updateCarAvailability = async (req, res, next) => {
+    try {
         await Car.updateOne(
-          { _id: req.params.id },
-          {
-            $set: {
-              "availability": req.body.availability
+            {_id: req.params.id},
+            {
+                $set: {
+                    "availability": req.body.availability
+                },
             },
-          },
             {new: true}
         );
         res.status(200).json("Car status has been updated.");
-      } catch (err) {
+    } catch (err) {
         next(err);
-      }
+    }
 }
 
-const deleteCar = async (req, res, next)=>{
-  const rentalID = req.params.rentalID;
-  try {
-    await Car.findByIdAndDelete(req.params.id);
+const deleteCar = async (req, res, next) => {
+    const rentalID = req.params.rentalID;
     try {
-      await RentalCar.findByIdAndUpdate(rentalID, {
-        $pull: { cars: req.params.id },
-      });
+        await Car.findByIdAndDelete(req.params.id);
+        try {
+            await RentalCar.findByIdAndUpdate(rentalID, {
+                $pull: {cars: req.params.id},
+            });
+        } catch (err) {
+            next(err);
+        }
+        res.status(200).json("Car has been deleted.");
     } catch (err) {
-      next(err);
+        next(err);
     }
-    res.status(200).json("Car has been deleted.");
-  } catch (err) {
-    next(err);
-  }
 };
 
 const getCar = async (req, res, next) => {
-  try {
-    const car = await Car.findById(req.params.carID);
-    const userIdentifier = req.cookies['uniqueViewer'];
+    try {
+        const car = await Car.findById(req.params.carID);
+        const userIdentifier = req.cookies['uniqueViewer'];
 
-    if (!userIdentifier) {
-      const newIdentifier = generateUniqueIdentifier();
-      if (!car.viewedUsers.includes(newIdentifier)) {
-        res.cookie('uniqueViewer', newIdentifier, { maxAge: 31536000000 });
-        car.viewedUsers.push(newIdentifier);
-        await car.save();
-      }
+        if (!userIdentifier) {
+            const newIdentifier = generateUniqueIdentifier();
+            if (!car.viewedUsers.includes(newIdentifier)) {
+                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
+                car.viewedUsers.push(newIdentifier);
+                await car.save();
+            }
+        }
+
+        res.json(car);
+    } catch (error) {
+        next(error);
     }
-
-    res.json(car);
-  } catch (error) {
-    next(error);
-  }
 };
 
 const getCars = async (req, res, next) => {
-  try {
-    if (Object.keys(req.query).length === 0) {
-      const cars = await Car.find({});
-      res.status(200).json(cars);
-    } else {
-      const { min, max, ...others } = req.query;
+    try {
+        if (Object.keys(req.query).length === 0) {
+            const cars = await Car.find({});
+            res.status(200).json(cars);
+        } else {
+            const {min, max, ...others} = req.query;
 
-      // Use parseInt to convert min and max to numbers
-      const minPrice = parseInt(min) || 1;
-      const maxPrice = parseInt(max) || 999;
+            // Use parseInt to convert min and max to numbers
+            const minPrice = parseInt(min) || 1;
+            const maxPrice = parseInt(max) || 999;
 
-      const cars = await Car.find({
-        ...others,
-        pricePerDay: { $gt: minPrice, $lt: maxPrice },
-      }).limit(req.query.limit);
+            const cars = await Car.find({
+                ...others,
+                pricePerDay: {$gt: minPrice, $lt: maxPrice},
+            }).limit(req.query.limit);
 
-      res.status(200).json(cars);
+            res.status(200).json(cars);
+        }
+    } catch (err) {
+        next(err);
     }
-  } catch (err) {
-    next(err);
-  }
 };
 
-const addReview = async (req, res, next)=>{
-  try{
-    const reviewData = {
-      username: req.user.username,
-      image: req.user.img,
-      review: req.body.review,
-    };
-    const car = await Car.findById(req.params.carID)
-    car.reviews.push({reviewData})
-    await car.save()
-    res.status(200).json({success: "Review has been added successfuly!"})
-  }catch (e) {
-    next(e)
-  }
+const addReview = async (req, res, next) => {
+    try {
+        const reviewData = {
+            username: req.user.username,
+            image: req.user.img,
+            review: req.body.review,
+        };
+        const car = await Car.findById(req.params.carID)
+        car.reviews.push({reviewData})
+        await car.save()
+        res.status(200).json({success: "Review has been added successfuly!"})
+    } catch (e) {
+        next(e)
+    }
 }
 
-const getReviews = async (req, res, next)=>{
-    try{
+const getReviews = async (req, res, next) => {
+    try {
         const car = await Car.findById(req.params.carID)
         res.status(200).json({reviews: car.reviews, count: car.reviews.length})
-    }catch (e) {
+    } catch (e) {
         next(e)
     }
 }

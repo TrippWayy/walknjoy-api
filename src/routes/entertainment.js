@@ -1,6 +1,7 @@
 const router = require("express").Router()
 const {checkAdmin, checkLogin} = require("../utils/verifyToken")
-const {createEntertainment,
+const {
+    createEntertainment,
     updateEntertainment,
     deleteEntertainment,
     getEntertainment,

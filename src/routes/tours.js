@@ -1,6 +1,16 @@
 const router = require("express").Router();
 const {checkAdmin, checkLogin} = require("../utils/verifyToken")
-const {createTour, updateTour, deleteTour, getTour, updateTourAvailability, getTours, countByCategory, getToursByCompanyName, countByCity} = require("../controllers/tour")
+const {
+    createTour,
+    updateTour,
+    deleteTour,
+    getTour,
+    updateTourAvailability,
+    getTours,
+    countByCategory,
+    getToursByCompanyName,
+    countByCity
+} = require("../controllers/tour")
 const {getReviews} = require("../controllers/tour");
 const {addReview} = require("../controllers/tour");
 

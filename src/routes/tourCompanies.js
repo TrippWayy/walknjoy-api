@@ -1,13 +1,15 @@
 const router = require("express").Router()
 const {checkAdmin, checkLogin} = require("../utils/verifyToken")
-const {createCompany,
-        updateCompany,
-        deleteCompany,
-        getCompany,
-        getCompanies,
-        getCompanyTours,
-        addReview,
-        getReviews} = require("../controllers/tourCompany")
+const {
+    createCompany,
+    updateCompany,
+    deleteCompany,
+    getCompany,
+    getCompanies,
+    getCompanyTours,
+    addReview,
+    getReviews
+} = require("../controllers/tourCompany")
 
 // CREATE
 router.post("/admin/", checkAdmin, createCompany)

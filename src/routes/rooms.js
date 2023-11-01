@@ -1,13 +1,13 @@
 const router = require("express").Router();
 const {
-  createRoom,
-  deleteRoom,
-  getRoom,
-  getRooms,
-  updateRoom,
-  updateRoomAvailability,
+    createRoom,
+    deleteRoom,
+    getRoom,
+    getRooms,
+    updateRoom,
+    updateRoomAvailability,
 } = require("../controllers/room");
-const { checkAdmin, checkLogin} = require("../utils/verifyToken");
+const {checkAdmin, checkLogin} = require("../utils/verifyToken");
 
 //CREATE
 router.post("/admin/:hotelID", checkAdmin, createRoom);

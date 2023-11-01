@@ -14,18 +14,18 @@ const BlogSchema = new mongoose.Schema({
         require: true
     },
     city: {
-      type: String
+        type: String
     },
     viewedUsers: [String],
     reviews: [
-    {
-      reviewData: {
-        username: String,
-        image: String,
-        review: String,
-      },
-    },
-  ],
+        {
+            reviewData: {
+                username: String,
+                image: String,
+                review: String,
+            },
+        },
+    ],
 }, {timestamps: true, collection: "Blogs"})
 
 const Blog = mongoose.model("BlogSchema", BlogSchema)

@@ -1,15 +1,15 @@
 const router = require("express").Router();
 const {
-  countByCity,
-  countByType,
-  createHotel,
-  deleteHotel,
-  getHotel,
-  getHotelRooms,
-  getHotels,
-  updateHotel,
-  addReview,
-  getReviews
+    countByCity,
+    countByType,
+    createHotel,
+    deleteHotel,
+    getHotel,
+    getHotelRooms,
+    getHotels,
+    updateHotel,
+    addReview,
+    getReviews
 } = require("../controllers/hotel.js");
 const {checkAdmin, checkLogin} = require("../utils/verifyToken")
 

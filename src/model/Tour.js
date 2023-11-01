@@ -6,7 +6,7 @@ const TourSchema = new mongoose.Schema({
         require: true,
         trim: true
     },
-    city:{
+    city: {
         type: String,
         require: true
     },
@@ -15,8 +15,8 @@ const TourSchema = new mongoose.Schema({
         require: true
     },
     finishDate: {
-      type: Date,
-      require: true
+        type: Date,
+        require: true
     },
     price: {
         type: Number,
@@ -48,20 +48,20 @@ const TourSchema = new mongoose.Schema({
     },
     viewedUsers: [String],
     reviews: [
-    {
-      reviewData: {
-        username: String,
-        image: String,
-        review: String,
-      },
-    },
-  ],
+        {
+            reviewData: {
+                username: String,
+                image: String,
+                review: String,
+            },
+        },
+    ],
     raiting: {
-      type: Number,
-      min: 0,
-      max: 5
+        type: Number,
+        min: 0,
+        max: 5
     },
-    placeNumber: [{ number: Number, unavailableDates: {type: [Date]}}],
+    placeNumber: [{number: Number, unavailableDates: {type: [Date]}}],
 }, {timestamps: true, collection: "Tours"})
 
 const Tour = mongoose.model("Tour", TourSchema)

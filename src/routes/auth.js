@@ -1,7 +1,18 @@
 const router = require("express").Router();
-const { register, google, googleCallback, subscribe, login, logout, forgetPassword, resetPassword, resetProfilePassword, employeeLogin} = require("../controllers/auth")
+const {
+    register,
+    google,
+    googleCallback,
+    subscribe,
+    login,
+    logout,
+    forgetPassword,
+    resetPassword,
+    resetProfilePassword,
+    employeeLogin
+} = require("../controllers/auth")
 const validateFields = require("../utils/validateFields");
-const {checkLogin, checkUnLogin,checkAdminLogin, checkEmployee} = require("../utils/verifyToken")
+const {checkLogin, checkUnLogin, checkAdminLogin, checkEmployee} = require("../utils/verifyToken")
 const upload = require("../middlewares/multer")
 const cloudinary = require("../middlewares/cloudinary")
 

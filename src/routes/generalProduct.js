@@ -1,5 +1,5 @@
 const router = require('express').Router()
-const countByCity = require("../controllers/getCountByCity")
+const countByCity = require("../controllers/generalProduct")
 
 router.get("/countByCity", countByCity)
 
