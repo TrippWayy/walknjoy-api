@@ -4,6 +4,7 @@ const Room = require("../model/Room");
 const Hotel = require("../model/Hotel");
 const Blog = require("../model/Blog");
 const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
+const {getItem} = require("../middlewares/generalControllers");
 
 const createTour = async (req, res, next) => {
     const companyID = req.params.companyID;
@@ -70,23 +71,7 @@ const deleteTour = async (req, res, next) => {
 };
 
 const getTour = async (req, res, next) => {
-    try {
-        const tour = await Blog.findById(req.params.tourID);
-        const userIdentifier = req.cookies['uniqueViewer'];
-
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueIdentifier();
-            if (!tour.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                tour.viewedUsers.push(newIdentifier);
-                await tour.save();
-            }
-        }
-
-        res.json(tour);
-    } catch (error) {
-        next(error);
-    }
+    getItem(Tour, req, res, next)
 };
 
 const getTours = async (req, res, next) => {

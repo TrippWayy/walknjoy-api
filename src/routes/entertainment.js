@@ -18,7 +18,7 @@ router.put("/admin/:id", checkAdmin, updateEntertainment)
 //DELETE
 router.delete("/admin/:id", checkAdmin, deleteEntertainment)
 //GET
-router.get("/find/:entertainmentID", getEntertainment)
+router.get("/find/:id", getEntertainment)
 router.get("/", getEntertainments)
 router.get("/countByCity", countByCity);
 router.post("/review/new/:entertainmentID", checkLogin, addReview)

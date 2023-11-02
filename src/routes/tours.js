@@ -23,7 +23,7 @@ router.put("/admin/:id", checkAdmin, updateTour)
 router.delete("/admin/:id/:companyid", checkAdmin, deleteTour)
 router.put("/availability/:id", updateTourAvailability)
 // GET
-router.get("/:tourID", getTour)
+router.get("/find/:id", getTour)
 // GET ALL
 router.get("/", getTours)
 router.get("/countByCategory", countByCategory)

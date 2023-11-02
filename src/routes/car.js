@@ -18,7 +18,7 @@ router.put("/admin/:id", checkAdmin, updateCar);
 //DELETE
 router.delete("/admin/:id/:rentalID", checkAdmin, deleteCar);
 //GET
-router.get("/:carID", getCar);
+router.get("/find/:id", getCar);
 //GET ALL
 router.get("/", getCars);
 

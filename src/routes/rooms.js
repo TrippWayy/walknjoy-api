@@ -17,7 +17,7 @@ router.put("/admin/:id", checkAdmin, updateRoom);
 //DELETE
 router.delete("/admin/:id/:hotelID", checkAdmin, deleteRoom);
 //GET
-router.get("/:roomID", getRoom);
+router.get("/find/:id", getRoom);
 //GET ALL
 router.get("/", getRooms);
 

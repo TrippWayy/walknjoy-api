@@ -18,7 +18,7 @@ router.put("/admin/:id", checkAdmin, updateCompany)
 // DELETE
 router.delete("/admin/:id", checkAdmin, deleteCompany)
 // GET
-router.delete("/find/:companyID", getCompany)
+router.get("/find/:id", getCompany)
 // GET ALL
 router.get("/", getCompanies)
 router.get("/tour/:id", getCompanyTours)

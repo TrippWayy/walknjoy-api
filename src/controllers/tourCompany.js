@@ -2,6 +2,7 @@ const TourCompany = require("../model/TourCompany")
 const Tour = require("../model/Tour")
 const Blog = require("../model/Blog");
 const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
+const {getItem} = require("../middlewares/generalControllers");
 
 const createCompany = async (req, res, next) => {
     const newCompany = new TourCompany(req.body);
@@ -36,23 +37,7 @@ const deleteCompany = async (req, res, next) => {
 }
 
 const getCompany = async (req, res, next) => {
-    try {
-        const company = await TourCompany.findById(req.params.companyID);
-        const userIdentifier = req.cookies['uniqueViewer'];
-
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueIdentifier();
-            if (!company.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                company.viewedUsers.push(newIdentifier);
-                await company.save();
-            }
-        }
-
-        res.json(company);
-    } catch (error) {
-        next(error);
-    }
+    getItem(TourCompany, req, res, next)
 }
 
 const getCompanies = async (req, res, next) => {

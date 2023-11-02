@@ -22,7 +22,7 @@ const countByCity = async (req, res, next) => {
                 Entertainment.countDocuments({city}).lean().exec()
             ]);
 
-            return {city, hotels: hotelCount, tours: tourCount, cars: carCount, entertainment: entertainmentCount};
+            return {city, hotels: hotelCount, tours: tourCount, cars: carCount, entertainments: entertainmentCount};
         });
 
         const counts = await Promise.all(countPromises);

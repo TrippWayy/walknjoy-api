@@ -2,6 +2,7 @@ const Car = require("../model/Car");
 const RentalCar = require("../model/RentalCar");
 const Blog = require("../model/Blog");
 const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
+const {getItem} = require("../middlewares/generalControllers");
 
 const createCar = async (req, res, next) => {
     const rentalID = req.params.rentalID;
@@ -69,23 +70,7 @@ const deleteCar = async (req, res, next) => {
 };
 
 const getCar = async (req, res, next) => {
-    try {
-        const car = await Car.findById(req.params.carID);
-        const userIdentifier = req.cookies['uniqueViewer'];
-
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueIdentifier();
-            if (!car.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                car.viewedUsers.push(newIdentifier);
-                await car.save();
-            }
-        }
-
-        res.json(car);
-    } catch (error) {
-        next(error);
-    }
+    getItem(Car, req, res, next)
 };
 
 const getCars = async (req, res, next) => {

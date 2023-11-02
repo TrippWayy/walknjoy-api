@@ -3,6 +3,7 @@ const Hotel = require("../model/Hotel");
 const {createError} = require("../utils/error");
 const Blog = require("../model/Blog");
 const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
+const {getItem} = require("../middlewares/generalControllers");
 
 const createRoom = async (req, res, next) => {
     const hotelID = req.params.hotelID;
@@ -67,23 +68,7 @@ const deleteRoom = async (req, res, next) => {
     }
 };
 const getRoom = async (req, res, next) => {
-    try {
-        const room = await Room.findById(req.params.roomID);
-        const userIdentifier = req.cookies['uniqueViewer'];
-
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueIdentifier();
-            if (!room.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                room.viewedUsers.push(newIdentifier);
-                await room.save();
-            }
-        }
-
-        res.json(room);
-    } catch (error) {
-        next(error);
-    }
+    getItem(Room, req, res, next)
 };
 const getRooms = async (req, res, next) => {
     try {

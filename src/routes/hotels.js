@@ -20,7 +20,7 @@ router.put("/admin/:id", checkAdmin, updateHotel);
 //DELETE
 router.delete("/admin/:id", checkAdmin, deleteHotel);
 //GET
-router.get("/find/:hotelID", getHotel);
+router.get("/find/:id", getHotel);
 //GET ALL
 router.get("/", getHotels);
 router.get("/countByCity", countByCity);

@@ -1,6 +1,7 @@
 const Blog = require("../model/Blog")
 const Car = require("../model/Car");
 const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
+const {getItem} = require("../middlewares/generalControllers");
 const createBlog = async (req, res, next) => {
     try {
         const newBlog = new Blog(req.body)
@@ -31,23 +32,7 @@ const getBlogs = async (req, res, next) => {
 }
 
 const getBlog = async (req, res, next) => {
-    try {
-        const blog = await Blog.findById(req.params.blogID);
-        const userIdentifier = req.cookies['uniqueViewer'];
-
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueIdentifier();
-            if (!blog.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                blog.viewedUsers.push(newIdentifier);
-                await blog.save();
-            }
-        }
-
-        res.json(blog);
-    } catch (error) {
-        next(error);
-    }
+    getItem(Blog, req, res, next)
 };
 
 

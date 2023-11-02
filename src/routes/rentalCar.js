@@ -19,7 +19,7 @@ router.put("/admin/:id", checkAdmin, updateRental);
 //DELETE
 router.delete("/admin/:id", checkAdmin, deleteRental);
 //GET
-router.get("/find/:rentalID", getRental);
+router.get("/find/:id", getRental);
 //GET ALL
 router.get("/", getRentals);
 router.get("/countByCity", countByCity);

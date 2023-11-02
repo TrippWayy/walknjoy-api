@@ -1,6 +1,7 @@
 const Entertainment = require("../model/Entertainment");
 const Hotel = require("../model/Hotel");
 const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
+const {getItem} = require("../middlewares/generalControllers");
 const createEntertainment = async (req, res, next) => {
     const newEntertainment = new Entertainment(req.body);
 
@@ -35,23 +36,7 @@ const deleteEntertainment = async (req, res, next) => {
 }
 
 const getEntertainment = async (req, res, next) => {
-    try {
-        const entertainment = await Entertainment.findById(req.params.entertainmentID);
-        const userIdentifier = req.cookies['uniqueViewer'];
-
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueIdentifier();
-            if (!entertainment.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                entertainment.viewedUsers.push(newIdentifier);
-                await entertainment.save();
-            }
-        }
-
-        res.json(entertainment);
-    } catch (error) {
-        next(error);
-    }
+    getItem(Entertainment, req, res, next)
 }
 
 const getEntertainments = async (req, res, next) => {
