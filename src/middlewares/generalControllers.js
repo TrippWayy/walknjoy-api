@@ -44,7 +44,7 @@ exports.getItems = async (Model, req, res, next) => {
 
                 const items = await Model.find({
                     ...others,
-                    pricePerDay: {$gt: minPrice, $lt: maxPrice},
+                    price: {$gt: minPrice, $lt: maxPrice},
                 }).limit(req.query.limit);
 
                 res.status(200).json(items);
