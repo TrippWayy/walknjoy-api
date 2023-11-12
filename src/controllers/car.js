@@ -1,8 +1,6 @@
 const Car = require("../model/Car");
 const RentalCar = require("../model/RentalCar");
-const Blog = require("../model/Blog");
-const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
-const {getItem} = require("../middlewares/generalControllers");
+const {getItem, getItems, generalAddReview, generalGetReviews} = require("../middlewares/generalControllers");
 
 const createCar = async (req, res, next) => {
     const rentalID = req.params.rentalID;
@@ -74,52 +72,15 @@ const getCar = async (req, res, next) => {
 };
 
 const getCars = async (req, res, next) => {
-    try {
-        if (Object.keys(req.query).length === 0) {
-            const cars = await Car.find({});
-            res.status(200).json(cars);
-        } else {
-            const {min, max, ...others} = req.query;
-
-            // Use parseInt to convert min and max to numbers
-            const minPrice = parseInt(min) || 1;
-            const maxPrice = parseInt(max) || 999;
-
-            const cars = await Car.find({
-                ...others,
-                pricePerDay: {$gt: minPrice, $lt: maxPrice},
-            }).limit(req.query.limit);
-
-            res.status(200).json(cars);
-        }
-    } catch (err) {
-        next(err);
-    }
+    getItems(Car, req, res, next)
 };
 
 const addReview = async (req, res, next) => {
-    try {
-        const reviewData = {
-            username: req.user.username,
-            image: req.user.img,
-            review: req.body.review,
-        };
-        const car = await Car.findById(req.params.carID)
-        car.reviews.push({reviewData})
-        await car.save()
-        res.status(200).json({success: "Review has been added successfuly!"})
-    } catch (e) {
-        next(e)
-    }
+    generalAddReview(Car, req, res, next)
 }
 
 const getReviews = async (req, res, next) => {
-    try {
-        const car = await Car.findById(req.params.carID)
-        res.status(200).json({reviews: car.reviews, count: car.reviews.length})
-    } catch (e) {
-        next(e)
-    }
+    generalGetReviews(Car, req, res, next)
 }
 
 

@@ -14,7 +14,7 @@ router.delete("/admin/:blogID", checkAdmin, deleteBlog)
 router.get("/", getBlogs)
 router.get("/find/:id", getBlog)
 
-router.post("/review/new/:blogID", checkLogin, addReview)
-router.get("/reviews/:blogID", getReviews)
+router.post("/review/new/:id", checkLogin, addReview)
+router.get("/reviews/:id", getReviews)
 
 module.exports = router;

@@ -26,8 +26,8 @@ router.get("/", getHotels);
 router.get("/countByCity", countByCity);
 router.get("/countByType", countByType);
 router.get("/room/:id", getHotelRooms);
-router.post("/review/new/:hotelID", checkLogin, addReview)
-router.get("/reviews/:hotelID", getReviews)
+router.post("/review/new/:id", checkLogin, addReview)
+router.get("/reviews/:id", getReviews)
 
 
 module.exports = router;

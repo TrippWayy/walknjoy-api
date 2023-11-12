@@ -1,10 +1,6 @@
 const RentalCar = require("../model/RentalCar");
 const Car = require("../model/Car")
-const Hotel = require("../model/Hotel");
-const Room = require("../model/Room");
-const Blog = require("../model/Blog");
-const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
-const {getItem} = require("../middlewares/generalControllers");
+const {getItem, getItems, generalAddReview, generalGetReviews} = require("../middlewares/generalControllers");
 
 const createRental = async (req, res, next) => {
     const newHotel = new RentalCar(req.body);
@@ -44,48 +40,16 @@ const getRental = async (req, res, next) => {
 };
 
 const getRentals = async (req, res, next) => {
-    try {
-        const {min, max, ...others} = req.query;
-        const query = {};
-
-        if (min || max) {
-            query.raiting = {};
-            if (min) query.raiting.$gt = parseInt(min);
-            if (max) query.raiting.$lt = parseInt(max);
-        }
-
-        const rentals = await RentalCar.find({...others, ...query}).limit(req.query.limit || 0);
-
-        res.status(200).json(rentals);
-    } catch (err) {
-        next(err);
-    }
+    getItems(RentalCar, req, res, next)
 };
 
 
 const addReview = async (req, res, next) => {
-    try {
-        const reviewData = {
-            username: req.user.username,
-            image: req.user.img,
-            review: req.body.review,
-        };
-        const rental = await RentalCar.findById(req.params.rentalID)
-        rental.reviews.push({reviewData})
-        await rental.save()
-        res.status(200).json({success: "Review has been added successfuly!"})
-    } catch (e) {
-        next(e)
-    }
+    generalAddReview(RentalCar, req, res, next)
 }
 
 const getReviews = async (req, res, next) => {
-    try {
-        const rental = await RentalCar.findById(req.params.rentalID)
-        res.status(200).json({reviews: rental.reviews, count: rental.reviews.length})
-    } catch (e) {
-        next(e)
-    }
+    generalGetReviews(RentalCar, req, res, next)
 }
 
 const countByCity = async (req, res, next) => {

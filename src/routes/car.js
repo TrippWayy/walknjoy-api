@@ -22,7 +22,7 @@ router.get("/find/:id", getCar);
 //GET ALL
 router.get("/", getCars);
 
-router.post("/review/new/:carID", checkLogin, addReview)
-router.get("/reviews/:carID", getReviews)
+router.post("/review/new/:id", checkLogin, addReview)
+router.get("/reviews/:id", getReviews)
 
 module.exports = router;

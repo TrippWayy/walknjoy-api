@@ -28,8 +28,8 @@ router.get("/find/:id", getTour)
 router.get("/", getTours)
 router.get("/countByCategory", countByCategory)
 router.get("/countByCity", countByCity)
-router.get("/reviews/:tourID", getReviews)
-router.post("/review/new/:tourID", checkLogin, addReview)
+router.get("/reviews/:id", getReviews)
+router.post("/review/new/:id", checkLogin, addReview)
 router.get("/:companyID", getToursByCompanyName)
 
 module.exports = router;

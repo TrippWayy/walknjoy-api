@@ -1,8 +1,5 @@
 const Room = require("../model/Room");
 const Hotel = require("../model/Hotel");
-const {createError} = require("../utils/error");
-const Blog = require("../model/Blog");
-const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
 const {getItem} = require("../middlewares/generalControllers");
 
 const createRoom = async (req, res, next) => {

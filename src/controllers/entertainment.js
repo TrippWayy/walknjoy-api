@@ -1,7 +1,5 @@
 const Entertainment = require("../model/Entertainment");
-const Hotel = require("../model/Hotel");
-const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
-const {getItem} = require("../middlewares/generalControllers");
+const {getItem, getItems, generalAddReview, generalGetReviews} = require("../middlewares/generalControllers");
 const createEntertainment = async (req, res, next) => {
     const newEntertainment = new Entertainment(req.body);
 
@@ -40,23 +38,7 @@ const getEntertainment = async (req, res, next) => {
 }
 
 const getEntertainments = async (req, res, next) => {
-    try {
-        const {min, max, ...others} = req.query;
-
-        const query = {};
-
-        if (min || max) {
-            query.price = {};
-            if (min) query.price.$gt = parseInt(min);
-            if (max) query.price.$lt = parseInt(max);
-        }
-
-        const entertainments = await Entertainment.find({...others, ...query}).limit(req.query.limit || 0);
-
-        res.status(200).json(entertainments);
-    } catch (err) {
-        next(err);
-    }
+    getItems(Entertainment, req, res, next)
 }
 
 const countByCity = async (req, res, next) => {
@@ -74,28 +56,11 @@ const countByCity = async (req, res, next) => {
 };
 
 const addReview = async (req, res, next) => {
-    try {
-        const reviewData = {
-            username: req.user.username,
-            image: req.user.img,
-            review: req.body.review,
-        };
-        const entertainment = await Entertainment.findById(req.params.entertainmentID)
-        entertainment.reviews.push({reviewData})
-        await entertainment.save()
-        res.status(200).json({success: "Review has been added successfuly!"})
-    } catch (e) {
-        next(e)
-    }
+    generalAddReview(Entertainment, req, res, next)
 }
 
 const getReviews = async (req, res, next) => {
-    try {
-        const entertainment = await Entertainment.findById(req.params.entertainmentID)
-        res.status(200).json({reviews: entertainment.reviews, count: entertainment.reviews.length})
-    } catch (e) {
-        next(e)
-    }
+    generalGetReviews(Entertainment, req, res, next)
 }
 
 module.exports = {

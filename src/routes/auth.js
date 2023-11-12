@@ -11,8 +11,7 @@ const {
     resetProfilePassword,
     employeeLogin
 } = require("../controllers/auth")
-const validateFields = require("../utils/validateFields");
-const {checkLogin, checkUnLogin, checkAdminLogin, checkEmployee} = require("../utils/verifyToken")
+const {checkLogin, checkUnLogin, checkAdminLogin} = require("../utils/verifyToken")
 const upload = require("../middlewares/multer")
 const cloudinary = require("../middlewares/cloudinary")
 

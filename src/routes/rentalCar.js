@@ -24,8 +24,8 @@ router.get("/find/:id", getRental);
 router.get("/", getRentals);
 router.get("/countByCity", countByCity);
 router.get("/car/:id", getRentalCars);
-router.post("/review/new/:rentalID", checkLogin, addReview)
-router.get("/reviews/:rentalID", getReviews)
+router.post("/review/new/:id", checkLogin, addReview)
+router.get("/reviews/:id", getReviews)
 
 
 module.exports = router;
