@@ -63,7 +63,7 @@ app.use(
 // Middlewares
 app.use(
     cors({
-        origin: [`http://localhost:3001`, `https://tripway-app.onrender.com/`],
+        origin: [`http://localhost:3001`, `https://tripway-app.onrender.com/`, `https://cool-custard-6dc617.netlify.app/`],
         credentials: true,
     })
 );
