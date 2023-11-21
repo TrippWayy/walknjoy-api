@@ -1,9 +1,6 @@
 const Tour = require("../model/Tour");
 const TourCompany = require("../model/TourCompany");
-const Room = require("../model/Room");
-const Hotel = require("../model/Hotel");
-const Blog = require("../model/Blog");
-const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
+const {getItem, getItems, generalAddReview, generalGetReviews} = require("../middlewares/generalControllers");
 
 const createTour = async (req, res, next) => {
     const companyID = req.params.companyID;
@@ -70,45 +67,18 @@ const deleteTour = async (req, res, next) => {
 };
 
 const getTour = async (req, res, next) => {
-    try {
-        const tour = await Blog.findById(req.params.tourID);
-        const userIdentifier = req.cookies['uniqueViewer'];
-
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueIdentifier();
-            if (!tour.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                tour.viewedUsers.push(newIdentifier);
-                await tour.save();
-            }
-        }
-
-        res.json(tour);
-    } catch (error) {
-        next(error);
-    }
+    getItem(Tour, req, res, next)
 };
 
 const getTours = async (req, res, next) => {
-    try {
-        const {min, max, ...others} = req.query;
-        const query = {};
-
-        if (min || max) {
-            query.price = {};
-            if (min) query.price.$gt = parseInt(min);
-            if (max) query.price.$lt = parseInt(max);
-        }
-
-        const tours = await Tour.find({...others, ...query}).limit(req.query.limit || 0);
-
-        res.status(200).json(tours);
-    } catch (err) {
-        next(err);
-    }
+    getItems(Tour, req, res, next)
 };
-
-
+const addReview = async (req, res, next) => {
+    generalAddReview(Tour, req, res, next)
+}
+const getReviews = async (req, res, next) => {
+    generalGetReviews(Tour, req, res, next)
+}
 const countByCategory = async (req, res, next) => {
     try {
         const interntalCount = await Tour.countDocuments({category: "internal"})
@@ -120,31 +90,6 @@ const countByCategory = async (req, res, next) => {
         ])
     } catch (err) {
         next(err)
-    }
-}
-
-const getReviews = async (req, res, next) => {
-    try {
-        const tour = await Tour.findById(req.params.tourID)
-        res.status(200).json({reviews: tour.reviews, count: tour.reviews.length})
-    } catch (e) {
-        next(e)
-    }
-}
-
-const addReview = async (req, res, next) => {
-    try {
-        const reviewData = {
-            username: req.user.username,
-            image: req.user.img,
-            review: req.body.review,
-        };
-        const tour = await Tour.findById(req.params.tourID)
-        tour.reviews.push({reviewData})
-        await tour.save()
-        res.status(200).json({success: "Review has been added successfuly!"})
-    } catch (e) {
-        next(e)
     }
 }
 const countByCity = async (req, res, next) => {

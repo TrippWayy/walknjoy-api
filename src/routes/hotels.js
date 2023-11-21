@@ -20,14 +20,14 @@ router.put("/admin/:id", checkAdmin, updateHotel);
 //DELETE
 router.delete("/admin/:id", checkAdmin, deleteHotel);
 //GET
-router.get("/find/:hotelID", getHotel);
+router.get("/find/:id", getHotel);
 //GET ALL
 router.get("/", getHotels);
 router.get("/countByCity", countByCity);
 router.get("/countByType", countByType);
 router.get("/room/:id", getHotelRooms);
-router.post("/review/new/:hotelID", checkLogin, addReview)
-router.get("/reviews/:hotelID", getReviews)
+router.post("/review/new/:id", checkLogin, addReview)
+router.get("/reviews/:id", getReviews)
 
 
 module.exports = router;

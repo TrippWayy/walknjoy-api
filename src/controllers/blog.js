@@ -1,6 +1,5 @@
 const Blog = require("../model/Blog")
-const Car = require("../model/Car");
-const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
+const {getItem, getItems, generalAddReview, generalGetReviews} = require("../middlewares/generalControllers");
 const createBlog = async (req, res, next) => {
     try {
         const newBlog = new Blog(req.body)
@@ -22,58 +21,20 @@ const deleteBlog = async (req, res, next) => {
 }
 
 const getBlogs = async (req, res, next) => {
-    try {
-        const blogs = await Blog.find({})
-        res.status(200).json(blogs)
-    } catch (e) {
-        next(e)
-    }
+    getItems(Blog, req, res, next)
 }
 
 const getBlog = async (req, res, next) => {
-    try {
-        const blog = await Blog.findById(req.params.blogID);
-        const userIdentifier = req.cookies['uniqueViewer'];
-
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueIdentifier();
-            if (!blog.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                blog.viewedUsers.push(newIdentifier);
-                await blog.save();
-            }
-        }
-
-        res.json(blog);
-    } catch (error) {
-        next(error);
-    }
+    getItem(Blog, req, res, next)
 };
 
 
 const addReview = async (req, res, next) => {
-    try {
-        const reviewData = {
-            username: req.user.username,
-            image: req.user.img,
-            review: req.body.review,
-        };
-        const blog = await Blog.findById(req.params.blogID)
-        blog.reviews.push({reviewData})
-        await blog.save()
-        res.status(200).json({success: "Review has been added successfuly!"})
-    } catch (e) {
-        next(e)
-    }
+    generalAddReview(Blog, req, res, next)
 }
 
 const getReviews = async (req, res, next) => {
-    try {
-        const blog = await Blog.findById(req.params.blogID)
-        res.status(200).json({reviews: blog.reviews, count: blog.reviews.length})
-    } catch (e) {
-        next(e)
-    }
+    generalGetReviews(Blog, req, res, next)
 }
 
 module.exports = {createBlog, deleteBlog, getBlogs, getBlog, getReviews, addReview}

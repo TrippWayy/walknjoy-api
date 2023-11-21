@@ -10,7 +10,6 @@ const bodyParser = require("body-parser");
 const ejs = require("ejs")
 const MongoStore = require('connect-mongodb-session')(session)
 
-
 // Import routes
 const authRoute = require("./src/routes/auth")
 const verifyRoute = require("./src/routes/verify")
@@ -18,8 +17,8 @@ const usersRoute = require("./src/routes/users")
 const hotelsRoute = require("./src/routes/hotels")
 const roomsRoute = require("./src/routes/rooms")
 const tourRoute = require("./src/routes/tours")
-const tourCompanies = require("./src/routes/tourCompanies")
-const rentalCar = require("./src/routes/rentalCar")
+const tourCompaniesRoute = require("./src/routes/tourCompanies")
+const rentalCarRoute = require("./src/routes/rentalCar")
 const carRoute = require("./src/routes/car")
 const entertainmentRoute = require("./src/routes/entertainment")
 const collaborateRoute = require("./src/routes/collaborate")
@@ -88,8 +87,8 @@ app.use("/api/users", usersRoute)
 app.use("/api/hotels", hotelsRoute);
 app.use("/api/rooms", roomsRoute);
 app.use("/api/tours", tourRoute);
-app.use("/api/tour-companies", tourCompanies)
-app.use("/api/rental-car", rentalCar)
+app.use("/api/tour-companies", tourCompaniesRoute)
+app.use("/api/rental-car", rentalCarRoute)
 app.use("/api/cars", carRoute)
 app.use("/api/entertainments", entertainmentRoute)
 app.use("/api/collaborate", collaborateRoute)

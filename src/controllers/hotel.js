@@ -1,7 +1,6 @@
 const Hotel = require("../model/Hotel");
 const Room = require("../model/Room");
-const Blog = require("../model/Blog");
-const {generateUniqueIdentifier} = require("../middlewares/uniqueKeyMiddleware");
+const {getItem, getItems, generalAddReview, generalGetReviews} = require("../middlewares/generalControllers")
 
 const createHotel = async (req, res, next) => {
     const newHotel = new Hotel(req.body);
@@ -37,68 +36,19 @@ const deleteHotel = async (req, res, next) => {
 };
 
 const getHotel = async (req, res, next) => {
-    try {
-        const hotel = await Hotel.findById(req.params.hotelID);
-        const userIdentifier = req.cookies['uniqueViewer'];
-
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueIdentifier();
-            if (!hotel.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                hotel.viewedUsers.push(newIdentifier);
-                await hotel.save();
-            }
-        }
-
-        res.json(hotel);
-    } catch (error) {
-        next(error);
-    }
+    getItem(Hotel, req, res, next)
 };
 
 const getHotels = async (req, res, next) => {
-    try {
-        const {min, max, ...others} = req.query;
-
-        const query = {};
-
-        if (min || max) {
-            query.price = {};
-            if (min) query.price.$gt = parseInt(min);
-            if (max) query.price.$lt = parseInt(max);
-        }
-
-        const hotels = await Hotel.find({...others, ...query}).limit(req.query.limit || 0);
-
-        res.status(200).json(hotels);
-    } catch (err) {
-        next(err);
-    }
+    getItems(Hotel, req, res, next)
 };
 
 const addReview = async (req, res, next) => {
-    try {
-        const reviewData = {
-            username: req.user.username,
-            image: req.user.img,
-            review: req.body.review,
-        };
-        const hotel = await Hotel.findById(req.params.hotelID)
-        hotel.reviews.push({reviewData})
-        await hotel.save()
-        res.status(200).json({success: "Review has been added successfuly!"})
-    } catch (e) {
-        next(e)
-    }
+    generalAddReview(Hotel, req, res, next)
 }
 
 const getReviews = async (req, res, next) => {
-    try {
-        const hotel = await Hotel.findById(req.params.hotelID)
-        res.status(200).json({reviews: hotel.reviews, count: hotel.reviews.length})
-    } catch (e) {
-        next(e)
-    }
+    generalGetReviews(Hotel, req, res, next)
 }
 
 const countByCity = async (req, res, next) => {

@@ -23,13 +23,13 @@ router.put("/admin/:id", checkAdmin, updateTour)
 router.delete("/admin/:id/:companyid", checkAdmin, deleteTour)
 router.put("/availability/:id", updateTourAvailability)
 // GET
-router.get("/:tourID", getTour)
+router.get("/find/:id", getTour)
 // GET ALL
 router.get("/", getTours)
 router.get("/countByCategory", countByCategory)
 router.get("/countByCity", countByCity)
-router.get("/reviews/:tourID", getReviews)
-router.post("/review/new/:tourID", checkLogin, addReview)
+router.get("/reviews/:id", getReviews)
+router.post("/review/new/:id", checkLogin, addReview)
 router.get("/:companyID", getToursByCompanyName)
 
 module.exports = router;

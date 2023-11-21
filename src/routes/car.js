@@ -18,11 +18,11 @@ router.put("/admin/:id", checkAdmin, updateCar);
 //DELETE
 router.delete("/admin/:id/:rentalID", checkAdmin, deleteCar);
 //GET
-router.get("/:carID", getCar);
+router.get("/find/:id", getCar);
 //GET ALL
 router.get("/", getCars);
 
-router.post("/review/new/:carID", checkLogin, addReview)
-router.get("/reviews/:carID", getReviews)
+router.post("/review/new/:id", checkLogin, addReview)
+router.get("/reviews/:id", getReviews)
 
 module.exports = router;
