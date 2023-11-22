@@ -30,6 +30,7 @@ const CarSchema = new mongoose.Schema({
         type: Number,
         require: true,
     },
+    productType: "Car",
     viewedUsers: [String],
     photos: {
         type: [String],

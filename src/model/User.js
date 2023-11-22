@@ -33,6 +33,10 @@ const UserSchema = new mongoose.Schema(
             type: String,
             required: true,
         },
+        favoriteProducts: {
+            type: [],
+            default: []
+        },
         isAdmin: {
             type: Boolean,
             default: false,

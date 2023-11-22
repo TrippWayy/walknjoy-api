@@ -53,6 +53,7 @@ const HotelSchema = new mongoose.Schema({
         type: Number,
         default: 0
     },
+    productType: "Hotel",
     featured: {
         type: Boolean,
         default: false,
