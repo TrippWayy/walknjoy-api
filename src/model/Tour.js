@@ -14,6 +14,7 @@ const TourSchema = new mongoose.Schema({
         type: Date,
         require: true
     },
+    productType: "Tour",
     finishDate: {
         type: Date,
         require: true

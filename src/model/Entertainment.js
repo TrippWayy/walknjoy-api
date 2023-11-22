@@ -20,6 +20,7 @@ const EntertainmentSchema = new mongoose.Schema({
         type: Number,
         require: true
     },
+    productType: "Entertainment",
     startDate: {
         type: Date,
         require: true
