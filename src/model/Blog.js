@@ -16,7 +16,10 @@ const BlogSchema = new mongoose.Schema({
     city: {
         type: String
     },
-    productType: "Blog",
+    productType: {
+        type: String,
+        default: "Blog"
+    },
     viewedUsers: [String],
     reviews: [
         {

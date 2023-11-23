@@ -13,7 +13,10 @@ const RoomSchema = new mongoose.Schema(
             type: Number,
             default: 0
         },
-        productType: "Room",
+        productType: {
+            type: String,
+            default: "Room"
+        },
         viewedUsers: [String],
         maxPeople: {
             type: Number,

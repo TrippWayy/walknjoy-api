@@ -17,7 +17,10 @@ const CompanySchema = new mongoose.Schema({
         type: String,
         require: true
     },
-    productType: "TourCompany",
+    productType: {
+        type: String,
+        default: "TourCompany"
+    },
     logo: {
         type: String,
         require: true

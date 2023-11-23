@@ -15,7 +15,10 @@ const RentalCarSchema = new mongoose.Schema({
     city: {
         type: String
     },
-    productType: "CarRental",
+    productType: {
+        type: String,
+        default: "CarRental"
+    },
     viewedUsers: [String],
     cars: {
         type: [String],
