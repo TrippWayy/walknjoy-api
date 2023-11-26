@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
         cb(null, uploadPath);
     },
     filename: (req, file, cb) => {
-        const fileName = req.body.email !== undefined ? `${req.body.email}_pp` : `${req.body.title}_blog`;
+        const fileName = req.user.email !== undefined ? `${req.user.email}_pp` : `${req.body.title}_blog`;
         cb(null, fileName);
     }
 });
