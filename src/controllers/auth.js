@@ -73,7 +73,7 @@ const login = async (req, res, next) => {
                 return res.status(500).json({error: "An error occurred during login."});
             }
 
-            return res.status(200).json({success: "User has been logged in successfully!", img: user.img});
+            return res.status(200).json({success: "User has been logged in successfully!", img: user.profileImg});
         });
     })(req, res, next);
 };

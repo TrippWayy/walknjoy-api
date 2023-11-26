@@ -20,7 +20,7 @@ exports.uploadCloud = async (req, res, next) => {
         }
 
         if (result.secure_url) {
-            req.body.img = result.secure_url;
+            req.body.profileImg = result.secure_url;
             fs.unlinkSync(image);
             next();
         } else {
@@ -32,3 +32,25 @@ exports.uploadCloud = async (req, res, next) => {
         res.status(500).json({error: "Internal server error"});
     }
 };
+
+exports.editCloud = async (req, res, next)=>{
+        let image;
+        let result;
+        try {
+            if (req.body.profileImg) {
+                image = path.join(__dirname, `../uploads/avatars/${req.user.email}_pp`);
+                result = await cloudinary.v2.uploader.upload(image, {public_id: `${req.body.username}_pp`});
+            }
+            if (result.secure_url) {
+                req.body.profileImg = result.secure_url;
+                fs.unlinkSync(image);
+                next();
+            } else {
+                console.log("File couldn't be uploaded to Cloudinary");
+                res.status(500).json({error: "File upload failed"});
+            }
+        } catch (e) {
+            console.error("Error uploading to Cloudinary:", e);
+            res.status(500).json({error: "Internal server error"});
+        }
+}

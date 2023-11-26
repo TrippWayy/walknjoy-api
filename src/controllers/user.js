@@ -3,13 +3,32 @@ const Hotel = require("../model/Hotel");
 const Car = require("../model/Car");
 const Tour = require("../model/Tour");
 const Entertainment = require("../model/Entertainment");
+const createError = require("../utils/error");
 
 const updateUser = async (req, res, next) => {
-    console.log("controller icine girdi")
+    try {
+        const user = await User.findOne({username: req.body.username})
+        if(!user){
+            const updatedUser = await User.findByIdAndUpdate(
+            {_id: req.user._id},
+            {$set: req.body},
+            {new: true}
+        );
+        res.status(200).json(updatedUser);
+        }
+        else {
+            next(createError(400, "This username was exists!"))
+        }
+    } catch (err) {
+        next(err);
+    }
+}
+
+const updateProfilePhoto = async (req, res, next) => {
     try {
         const updatedUser = await User.findByIdAndUpdate(
             {_id: req.user._id},
-            {$set: req.body},
+            {$set: { profileImg: req.body.profileImg }},
             {new: true}
         );
         res.status(200).json(updatedUser);
@@ -88,4 +107,4 @@ const getUsers = async (req, res, next) => {
     }
 }
 
-module.exports = {updateUser, deleteUser, getUsers, getFavorites, addFavorite, getUser}
+module.exports = {updateUser, deleteUser, getUsers, getFavorites, addFavorite, getUser, updateProfilePhoto}

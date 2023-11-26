@@ -59,7 +59,7 @@ exports.generalAddReview = async (Model, req, res, next) => {
     try {
         const reviewData = {
             username: req.user.username,
-            image: req.user.img,
+            image: req.user.profileImg,
             review: req.body.review,
         };
         const item = await Model.findById(req.params.id)
