@@ -3,18 +3,36 @@ const Hotel = require("../model/Hotel");
 const Car = require("../model/Car");
 const Tour = require("../model/Tour");
 const Entertainment = require("../model/Entertainment");
+const createError = require("../utils/error");
 
 const updateUser = async (req, res, next) => {
-    console.log("controller icine girdi")
+    try {
+        const user = await User.findOne({username: req.body.username})
+        if (!user) {
+            const updatedUser = await User.findByIdAndUpdate(
+                {_id: req.user._id},
+                {$set: req.body},
+                {new: true}
+            );
+            res.status(200).json(updatedUser);
+        } else {
+            next(createError(400, "This username was exists already!"));
+        }
+    } catch (e) {
+        next(e)
+    }
+}
+
+const updateProfilePhoto = async (req, res, next) => {
     try {
         const updatedUser = await User.findByIdAndUpdate(
             {_id: req.user._id},
-            {$set: req.body},
+            {$set: {img: req.body.img}},
             {new: true}
         );
         res.status(200).json(updatedUser);
-    } catch (err) {
-        next(err);
+    } catch (e) {
+        next(e)
     }
 }
 
@@ -35,11 +53,11 @@ const getUser = async (req, res, next) => {
     }
 }
 
-const getFavorites = async (req, res, next)=>{
-    try{
+const getFavorites = async (req, res, next) => {
+    try {
         const user = await User.findById(req.user.id)
         res.status(200).json(user.favoriteProducts)
-    }catch (e) {
+    } catch (e) {
         next(e)
     }
 }
@@ -61,7 +79,7 @@ const addFavorite = async (req, res, next) => {
         }
 
         if (!foundProduct) {
-            return res.status(404).json({ error: 'Product not found' });
+            return res.status(404).json({error: 'Product not found'});
         }
         const productIndex = user.favoriteProducts.findIndex((product) => product instanceof foundProduct.constructor);
 
@@ -72,7 +90,7 @@ const addFavorite = async (req, res, next) => {
         }
 
         await user.save();
-        res.status(200).json({ success: "Favorites updated" });
+        res.status(200).json({success: "Favorites updated"});
     } catch (e) {
         next(e);
     }
@@ -88,4 +106,4 @@ const getUsers = async (req, res, next) => {
     }
 }
 
-module.exports = {updateUser, deleteUser, getUsers, getFavorites, addFavorite, getUser}
+module.exports = {updateUser, deleteUser, getUsers, getFavorites, addFavorite, getUser, updateProfilePhoto}

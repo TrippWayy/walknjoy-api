@@ -3,11 +3,11 @@ const {createBlog, deleteBlog, getBlogs, getBlog} = require("../controllers/blog
 const {checkAdmin, checkLogin} = require("../utils/verifyToken")
 const {addReview, getReviews} = require("../controllers/blog");
 const {cronNews} = require("../middlewares/cronMiddleware")
-const upload = require("../middlewares/multer");
-const cloudinary = require("../middlewares/cloudinary");
+const {uploadBlog} = require("../middlewares/multer");
+const {blogCloud} = require("../middlewares/cloudinary");
 
 // CREATE
-router.post("/admin", checkAdmin, cronNews, upload.single('img'), cloudinary.uploadCloud, createBlog)
+router.post("/admin", checkAdmin, cronNews, uploadBlog.single('img'), blogCloud, createBlog)
 router.delete("/admin/:blogID", checkAdmin, deleteBlog)
 
 // GET

@@ -12,10 +12,10 @@ const {
     employeeLogin
 } = require("../controllers/auth")
 const {checkLogin, checkUnLogin, checkAdminLogin} = require("../utils/verifyToken")
-const upload = require("../middlewares/multer")
-const cloudinary = require("../middlewares/cloudinary")
+const {uploadAccount} = require("../middlewares/multer");
+const {accountCloud} = require("../middlewares/cloudinary");
 
-router.post("/register", checkUnLogin, upload.single('img'), cloudinary.uploadCloud, register)
+router.post("/register", checkUnLogin, uploadAccount.single("img"), accountCloud, register)
 router.post("/login", checkUnLogin, login)
 router.post("/admin/login", checkUnLogin, checkAdminLogin, login)
 router.post("/logout", checkLogin, logout)
