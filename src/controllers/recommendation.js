@@ -25,7 +25,7 @@ const getRecommendations = async (req, res, next) => {
 
         const products = [hotels.length, tours.length, cars.length, entertainments.length]
         const maxLengthProduct = products.reduce((max, current) => (current.length > max.length ? current : max), '')
-
+        res.send("salam")
 
     } catch (e) {
         next(e)

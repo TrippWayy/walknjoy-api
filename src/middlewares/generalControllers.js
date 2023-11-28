@@ -1,4 +1,4 @@
-const {generateUniqueKey} = require("../utils/generateUniqueKey")
+const uuid = require('uuid');
 const TourCompany = require("../model/TourCompany");
 const Blog = require("../model/Blog");
 const UserInteraction = require("../model/UserInteraction")
@@ -8,23 +8,20 @@ exports.getItem = async (Model, req, res, next) => {
   try {
     const item = await Model.findById(req.params.id);
     const userIdentifier = req.cookies['uniqueViewer'];
-
-    if (!userIdentifier) {
-      const newIdentifier = generateUniqueKey();
+    if (!userIdentifier || !item.viewedUsers.includes(userIdentifier)) {
+      const newIdentifier = uuid.v4();
       if (!item.viewedUsers.includes(newIdentifier)) {
         res.cookie('uniqueViewer', newIdentifier, { maxAge: 31536000000 });
         item.viewedUsers.push(newIdentifier);
-
         // Save the item with the updated viewedUsers array
         await item.save();
-
         // Update the UserInteraction model using the simulated data
         const userInteraction = await UserInteraction.findOne({ userID: req.user._id });
 
         if (!userInteraction) {
           // Create a new UserInteraction document if it doesn't exist
           const newUserInteraction = new UserInteraction({
-            userID: req.user,_id,
+            userID: req.user._id,
             products: [],
           });
 
@@ -38,7 +35,7 @@ exports.getItem = async (Model, req, res, next) => {
           // Check if the productType is already in the userInteraction document
           const existingProductType = userInteraction.products.find(product => product.productType === item.productType);
 
-          if (existingProductType) {
+          if (existingProductType && !existingProductType.productID.includes(item._id)) {
             // If the productType exists, add the new productID to the existing productType
             existingProductType.productID.push(item._id);
           } else {
