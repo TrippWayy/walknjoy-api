@@ -19,7 +19,7 @@ exports.getItem = async (Model, req, res, next) => {
         await item.save();
 
         // Update the UserInteraction model using the simulated data
-        const userInteraction = await UserInteraction.findOne({ userID: newIdentifier });
+        const userInteraction = await UserInteraction.findOne({ userID: req.user._id });
 
         if (!userInteraction) {
           // Create a new UserInteraction document if it doesn't exist
