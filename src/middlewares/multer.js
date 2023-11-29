@@ -1,23 +1,28 @@
 const multer = require('multer');
-const path = require("path")
+const path = require('path');
 
-const storage = multer.diskStorage({
+const generateFileName = (req, file, cb) => {
+    let username = req.user ? req.user.username : req.body.username;
+    let blogTitle = req.body.tile
+    let prefix = req.route.path === '/blog' ? "blog" : 'pp';
+    cb(null, `${blogTitle ? blogTitle : username}_${prefix}`);
+};
+
+const blogStorage = multer.diskStorage({
     destination: (req, file, cb) => {
-        if (req.body.email !== undefined) {
-            cb(null, path.join(__dirname, "../uploads/avatars"));
-        } else {
-            cb(null, path.join(__dirname, "../uploads/blogs"));
-        }
+        cb(null, path.join(__dirname, "../uploads/blogs"));
     },
-    filename: (req, file, cb) => {
-        if (req.body.email !== undefined) {
-            cb(null, req.body.email + "_pp")
-        } else {
-            cb(null, req.body.title + "_blog")
-        }
-    }
+    filename: generateFileName
 });
 
-const upload = multer({storage: storage});
+const accountStorage = multer.diskStorage({
+    destination: (req, file, cb) => {
+        cb(null, path.join(__dirname, "../uploads/avatars"));
+    },
+    filename: generateFileName
+});
 
-module.exports = upload;
+const uploadBlog = multer({ storage: blogStorage });
+const uploadAccount = multer({ storage: accountStorage });
+
+module.exports = { uploadBlog, uploadAccount };

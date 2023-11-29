@@ -1,4 +1,7 @@
 const Blog = require('../model/Blog');
+const Car = require("../model/Car");
+const Room = require("../model/Room");
+const Tour = require("../model/Tour")
 const send = require("../utils/sendEmail");
 const User = require("../model/User");
 const cron = require("node-cron");
@@ -9,22 +12,56 @@ const sendEmailOnChange = () => {
         if (change.operationType === 'insert') {
             const users = await User.find({isSubscriber: true});
             const newBlog = change.fullDocument;
-            users.forEach(user => {
-                const options = {
+            const emailPromises = users.map(async (user) => {
+                const emailOptions = {
                     email: user.email,
                     subject: 'Walknjoy News',
                     message: `A new blog has been published: ${newBlog.title}`,
                 };
-                send.sendMail(options);
+                await send.sendMail(emailOptions);
             });
+
+            await Promise.all(emailPromises);
         }
     });
 };
 
+const sendEmailOnDiscount = (product) => {
+        product.watch().on('change', async (change) => {
+            if (change.operationType === "insert") {
+                console.log("Gelib burani gordu")
+                const users = await User.find({isSubscriber: true});
+                const newProduct = change.fullDocument;
+                if (newProduct.percent !== 0) {
+                    const emailPromises = users.map(async (user) => {
+                        const emailOptions = {
+                            email: user.email,
+                            subject: 'Walknjoy Discounts',
+                            message: `There is a discount on Walknjoy You can want to see that:  ${newProduct.title.toUpperCase()}`,
+                        };
+                        await send.sendMail(emailOptions);
+                    });
+                    await Promise.all(emailPromises);
+                }
+            }
+        })
+}
+
 // Schedule the cron job separately outside the change event handler
-exports.cronRun = (req, res, next) => {
+const cronNews = (req, res, next) => {
     cron.schedule('*/2 * * * * *', () => {
         sendEmailOnChange();
     });
     next();
 }
+
+const cronDiscount = (product)=> {
+    return (req, res, next) => {
+        cron.schedule('*/2 * * * * *', () => {
+            sendEmailOnDiscount(product)
+        })
+        next()
+    }
+}
+
+module.exports = {cronNews, cronDiscount}

@@ -8,12 +8,17 @@ const EmployeeSchema = new mongoose.Schema({
         trim: true,
         unique: true
     },
-    company: {
+    companyName: {
         type: String,
         require: true,
         trim: true,
         unique: true
     },
+    companyCategory: {
+        type: String,
+        require: true
+    }
+    ,
     password: {
         type: String,
         require: true,

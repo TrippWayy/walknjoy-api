@@ -1,26 +1,62 @@
-const {generateUniqueKey} = require("../utils/generateUniqueKey")
+const uuid = require('uuid');
 const TourCompany = require("../model/TourCompany");
 const Blog = require("../model/Blog");
+const UserInteraction = require("../model/UserInteraction")
+const Hotel = require("../model/Hotel");
 
 exports.getItem = async (Model, req, res, next) => {
-    try {
-        const item = await Model.findById(req.params.id); // (id will be id of Hotel, Car, Tour and etc.)
-        const userIdentifier = req.cookies['uniqueViewer'];
+  try {
+    const item = await Model.findById(req.params.id);
+    const userIdentifier = req.cookies['uniqueViewer'];
+    if (!userIdentifier || !item.viewedUsers.includes(userIdentifier)) {
+      const newIdentifier = uuid.v4();
+      if (!item.viewedUsers.includes(newIdentifier)) {
+        res.cookie('uniqueViewer', newIdentifier, { maxAge: 31536000000 });
+        item.viewedUsers.push(newIdentifier);
+        // Save the item with the updated viewedUsers array
+        await item.save();
+        // Update the UserInteraction model using the simulated data
+        const userInteraction = await UserInteraction.findOne({ userID: req.user._id });
 
-        if (!userIdentifier) {
-            const newIdentifier = generateUniqueKey();
-            if (!item.viewedUsers.includes(newIdentifier)) {
-                res.cookie('uniqueViewer', newIdentifier, {maxAge: 31536000000});
-                item.viewedUsers.push(newIdentifier);
-                await item.save();
-            }
+        if (!userInteraction) {
+          // Create a new UserInteraction document if it doesn't exist
+          const newUserInteraction = new UserInteraction({
+            userID: req.user._id,
+            products: [],
+          });
+
+          newUserInteraction.products.push({
+            productType: item.productType,
+            productID: [item._id],
+          });
+
+          await newUserInteraction.save();
+        } else {
+          // Check if the productType is already in the userInteraction document
+          const existingProductType = userInteraction.products.find(product => product.productType === item.productType);
+
+          if (existingProductType && !existingProductType.productID.includes(item._id)) {
+            // If the productType exists, add the new productID to the existing productType
+            existingProductType.productID.push(item._id);
+          } else {
+            // If the productType doesn't exist, create a new productType entry
+            userInteraction.products.push({
+              productType: item.productType,
+              productID: [item._id],
+            });
+          }
+
+          await userInteraction.save();
         }
-
-        res.json(item);
-    } catch (error) {
-        next(error);
+      }
     }
+
+    res.json(item);
+  } catch (error) {
+    next(error);
+  }
 };
+
 
 exports.getItems = async (Model, req, res, next) => {
     if (Model === Blog || Model === TourCompany) {
