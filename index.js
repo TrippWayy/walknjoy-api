@@ -21,7 +21,7 @@ const tourCompaniesRoute = require("./src/routes/tourCompanies")
 const rentalCarRoute = require("./src/routes/rentalCar")
 const carRoute = require("./src/routes/car")
 const entertainmentRoute = require("./src/routes/entertainment")
-const collaborateRoute = require("./src/routes/collaborate")
+const employeesRoute = require("./src/routes/employees")
 const blogRoute = require("./src/routes/blog")
 const generalProductRoute = require("./src/routes/generalProduct")
 
@@ -91,7 +91,7 @@ app.use("/api/tour-companies", tourCompaniesRoute)
 app.use("/api/rental-car", rentalCarRoute)
 app.use("/api/cars", carRoute)
 app.use("/api/entertainments", entertainmentRoute)
-app.use("/api/collaborate", collaborateRoute)
+// app.use("/api/employees", employeesRoute)
 app.use("/api/blogs", blogRoute)
 app.use("/api/general/products", generalProductRoute)
 
@@ -100,11 +100,9 @@ app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
     const errorMessage = err.message || "Something went wrong!";
     return res.status(errorStatus).json({
-        success: false,
         status: errorStatus,
         error: errorMessage,
         stack: err.stack,
-        error: err
     });
 });
 

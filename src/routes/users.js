@@ -1,6 +1,6 @@
 const {checkLogin, checkAdmin} = require("../utils/verifyToken");
 const router = require("express").Router();
-const {updateUser, deleteUser, getUser, getUsers, getFavorites, addFavorite, updateProfilePhoto} = require("../controllers/user")
+const {updateUser, deleteUser, getUser, getUsers, getFavorites, addFavorite, updateProfilePhoto, sendOffer} = require("../controllers/user")
 const {uploadAccount} = require("../middlewares/multer");
 const {accountCloud} = require("../middlewares/cloudinary");
 
@@ -17,7 +17,7 @@ router.get("/user/profile", checkLogin, getUser);
 // GET and POST FAVORITES
 router.get("/user/favorites", checkLogin, getFavorites)
 router.post("/user/favorites/:id", checkLogin, addFavorite)
-
+router.post("/user/send/offer", checkLogin, sendOffer)
 //GET ALL
 router.get("/admin", checkAdmin, getUsers);
 

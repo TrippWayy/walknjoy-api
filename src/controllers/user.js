@@ -4,6 +4,7 @@ const Car = require("../model/Car");
 const Tour = require("../model/Tour");
 const Entertainment = require("../model/Entertainment");
 const createError = require("../utils/error");
+const send = require("../utils/sendEmail");
 
 const updateUser = async (req, res, next) => {
     try {
@@ -105,5 +106,24 @@ const getUsers = async (req, res, next) => {
         next(err);
     }
 }
+const sendOffer = async (req, res, next) => {
+    const employeeInfo = req.body;
+    try {
+        const options = {
+            email: "mansimovnijat@gmail.com",
+            subject: 'Collaborate Offer',
+            message: `${employeeInfo.companyName} 
+                      ${employeeInfo.fullName}
+                      ${employeeInfo.job}
+                      ${employeeInfo.businessEmail}
+                      ${employeeInfo.businessPhone}
+                      ${employeeInfo.message}`,
+        };
+        await send.sendMail(options);
+        res.status(200).json({success: 'Collaborate offer has been sent to Walknjoy!'});
+    } catch (e) {
+        next(e)
+    }
+}
 
-module.exports = {updateUser, deleteUser, getUsers, getFavorites, addFavorite, getUser, updateProfilePhoto}
+module.exports = {updateUser, deleteUser, getUsers, getFavorites, addFavorite, getUser, updateProfilePhoto, sendOffer}
