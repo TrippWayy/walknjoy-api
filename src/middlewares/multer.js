@@ -3,8 +3,9 @@ const path = require('path');
 
 const generateFileName = (req, file, cb) => {
     let username = req.user ? req.user.username : req.body.username;
+    let blogTitle = req.body.tile
     let prefix = req.route.path === '/blog' ? "blog" : 'pp';
-    cb(null, `${username}_${prefix}`);
+    cb(null, `${blogTitle ? blogTitle : username}_${prefix}`);
 };
 
 const blogStorage = multer.diskStorage({
