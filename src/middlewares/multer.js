@@ -18,9 +18,24 @@ const createStorage = (subfolder, fileNamePrefix) => multer.diskStorage({
     }
 });
 
-const uploadBlog = multer({ storage: createStorage('blogs', 'blog') }).single('img');
-const uploadAccount = multer({ storage: createStorage('avatars', 'pp') }).single('img');
-const uploadHotel = multer({ storage: createStorage('hotels', 'hotel') }).array('photos', 5);
-const uploadRoom = multer({ storage: createStorage('rooms', 'room') }).array('photos', 5);
+const uploadBlog = multer({storage: createStorage('blogs', 'blog')}).single('img');
+const uploadAccount = multer({storage: createStorage('avatars', 'pp')}).single('img');
+const uploadHotel = multer({storage: createStorage('hotels', 'hotel')}).array('photos', 5);
+const uploadRoom = multer({storage: createStorage('rooms', 'room')}).array('photos', 5);
+const uploadTourCompany = multer({storage: createStorage("logos", "logo")}).single("logo")
+const uploadTour = multer({storage: createStorage("tours", "tour")}).array("photos")
+const uploadRentalCar = multer({storage: createStorage("logos", "logo")}).single("logo")
+const uploadCar = multer({storage: createStorage("cars", "car")}).array("photos", 5)
+const uploadEntertainment = multer({storage: createStorage("entertainments", "entertainment")}).array("photos", 5)
 
-module.exports = { uploadBlog, uploadAccount, uploadHotel, uploadRoom };
+module.exports = {
+    uploadBlog,
+    uploadAccount,
+    uploadHotel,
+    uploadRoom,
+    uploadTourCompany,
+    uploadTour,
+    uploadRentalCar,
+    uploadCar,
+    uploadEntertainment
+};

@@ -15,10 +15,12 @@ const {getReviews} = require("../controllers/tour");
 const {addReview} = require("../controllers/tour");
 const {cronDiscount} = require("../middlewares/cronMiddleware");
 const Tour = require("../model/Tour");
+const {uploadTour} = require("../middlewares/multer");
+const {tourCloud} = require("../middlewares/cloudinary");
 
 
 // CREATE
-router.post("/admin/:companyID", checkAdmin, cronDiscount(Tour), createTour)
+router.post("/admin/:companyID", uploadTour, tourCloud, checkAdmin, cronDiscount(Tour), createTour)
 // UPDATE
 router.put("/admin/:id", checkAdmin, updateTour)
 // DELETE

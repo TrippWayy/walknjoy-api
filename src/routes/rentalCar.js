@@ -11,9 +11,11 @@ const {
     getRentalCars,
     countByCity
 } = require("../controllers/rentalCar")
+const {uploadRentalCar} = require("../middlewares/multer");
+const {rentalCarCloud} = require("../middlewares/cloudinary");
 
 //CREATE
-router.post("/admin/", checkAdmin, createRental);
+router.post("/admin/", checkAdmin, uploadRentalCar, rentalCarCloud, createRental);
 //UPDATE
 router.put("/admin/:id", checkAdmin, updateRental);
 //DELETE

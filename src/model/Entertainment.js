@@ -28,6 +28,10 @@ const EntertainmentSchema = new mongoose.Schema({
         type: Date,
         require: true
     },
+    photos: {
+      type: [String],
+      require: true
+    },
     finishDate: {
         type: Date,
         require: true

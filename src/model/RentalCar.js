@@ -12,6 +12,9 @@ const RentalCarSchema = new mongoose.Schema({
         type: String,
         require: true
     },
+    logo: {
+        type: String,
+    },
     city: {
         type: String
     },

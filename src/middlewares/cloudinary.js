@@ -11,7 +11,7 @@ cloudinary.config({
 
 const uploadToCloudinary = async (filePath, publicId) => {
     try {
-        const result = await cloudinary.v2.uploader.upload(filePath, { public_id: publicId });
+        const result = await cloudinary.v2.uploader.upload(filePath, {public_id: publicId});
         return result.secure_url;
     } catch (error) {
         console.error("Error uploading to Cloudinary:", error);
@@ -37,16 +37,20 @@ const handleCloudinaryUpload = async (req, res, next, filePath, publicId) => {
 
 const createCloudMiddleware = (subfolder, field) => async (req, res, next) => {
     try {
-        req.body[field] = [];
+        if (field === "logo") {
+            req.body[field] = ""
+        } else {
+            req.body[field] = [];
+        }
 
         for (const name of req.fileNames) {
             const image = path.join(__dirname, `../uploads/${subfolder}/${name}`);
             const secureUrl = await uploadToCloudinary(image, name);
 
             if (secureUrl) {
-                if(req.body.photos){
+                if (field === "photos") {
                     req.body[field].push(secureUrl);
-                }else{
+                } else {
                     req.body[field] = secureUrl;
                 }
 
@@ -65,8 +69,22 @@ const createCloudMiddleware = (subfolder, field) => async (req, res, next) => {
 
 const blogCloud = createCloudMiddleware('blogs', 'img');
 const accountCloud = createCloudMiddleware('avatars', 'img');
-const tourCompanyCloud = createCloudMiddleware('logos', 'img');
+const tourCompanyCloud = createCloudMiddleware('logos', 'logo');
 const hotelCloud = createCloudMiddleware('hotels', 'photos');
 const roomCloud = createCloudMiddleware('rooms', 'photos');
+const tourCloud = createCloudMiddleware("tours", "photos")
+const rentalCarCloud = createCloudMiddleware("logos", "logo")
+const carCloud = createCloudMiddleware("cars", "photos")
+const entertainmentCloud = createCloudMiddleware("entertainments", "photos")
 
-module.exports = { blogCloud, accountCloud, hotelCloud, roomCloud, tourCompanyCloud };
+module.exports = {
+    blogCloud,
+    accountCloud,
+    hotelCloud,
+    roomCloud,
+    tourCompanyCloud,
+    tourCloud,
+    rentalCarCloud,
+    carCloud,
+    entertainmentCloud
+};

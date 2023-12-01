@@ -11,9 +11,11 @@ const {checkAdmin, checkLogin} = require("../utils/verifyToken");
 const {addReview, getReviews} = require("../controllers/car");
 const {cronDiscount} = require("../middlewares/cronMiddleware");
 const Car = require("../model/Car");
+const {uploadCar} = require("../middlewares/multer");
+const {carCloud} = require("../middlewares/cloudinary");
 
 //CREATE
-router.post("/admin/:rentalID", checkAdmin, cronDiscount(Car), createCar);
+router.post("/admin/:rentalID", checkAdmin, uploadCar, carCloud, cronDiscount(Car), createCar);
 //UPDATE
 router.put("/availability/:id", updateCarAvailability);
 router.put("/admin/:id", checkAdmin, updateCar);

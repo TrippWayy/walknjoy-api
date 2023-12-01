@@ -10,9 +10,11 @@ const {
     addReview,
     getReviews
 } = require("../controllers/entertainment")
+const {uploadEntertainment} = require("../middlewares/multer");
+const {entertainmentCloud} = require("../middlewares/cloudinary");
 
 // CREATE
-router.post("/admin", checkAdmin, createEntertainment)
+router.post("/admin", checkAdmin, uploadEntertainment, entertainmentCloud, createEntertainment)
 //UPDATE
 router.put("/admin/:id", checkAdmin, updateEntertainment)
 //DELETE
