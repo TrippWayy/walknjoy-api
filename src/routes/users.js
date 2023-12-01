@@ -6,7 +6,7 @@ const {accountCloud} = require("../middlewares/cloudinary");
 
 //UPDATE
 router.put("/user/update", checkLogin, updateUser);
-router.put("/user/update/profile-photo", checkLogin, uploadAccount.single("img"), accountCloud, updateProfilePhoto)
+router.put("/user/update/profile-photo", checkLogin, uploadAccount, accountCloud, updateProfilePhoto)
 
 //DELETE
 router.delete("/user/delete", checkLogin, deleteUser);

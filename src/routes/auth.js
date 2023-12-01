@@ -15,7 +15,7 @@ const {checkLogin, checkUnLogin, checkAdminLogin} = require("../utils/verifyToke
 const {uploadAccount} = require("../middlewares/multer");
 const {accountCloud} = require("../middlewares/cloudinary");
 
-router.post("/register", checkUnLogin, uploadAccount.single("img"), accountCloud, register)
+router.post("/register", checkUnLogin, uploadAccount, accountCloud, register)
 router.post("/login", checkUnLogin, login)
 router.post("/admin/login", checkUnLogin, checkAdminLogin, login)
 router.post("/logout", checkLogin, logout)

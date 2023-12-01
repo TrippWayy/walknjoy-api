@@ -1,6 +1,7 @@
 const cloudinary = require('cloudinary');
 const path = require('path');
-const fs = require('fs');
+const createError = require("../utils/error");
+const fs = require('fs').promises;
 
 cloudinary.config({
     cloud_name: 'dvr9fma4d',
@@ -8,33 +9,64 @@ cloudinary.config({
     api_secret: 'n1_MPkPVrQSazoNjzaXi0N6N2f0'
 });
 
-const uploadToCloudinary = async (filePath, publicId, req, res, next) => {
+const uploadToCloudinary = async (filePath, publicId) => {
     try {
         const result = await cloudinary.v2.uploader.upload(filePath, { public_id: publicId });
-
-        if (result.secure_url) {
-            req.body.img = result.secure_url;
-            fs.unlinkSync(filePath);
-            next();
-        } else {
-            console.log("File couldn't be uploaded to Cloudinary");
-            res.status(500).json({ error: "File upload failed" });
-        }
-    } catch (e) {
-        console.error("Error uploading to Cloudinary:", e);
-        res.status(500).json({ error: "Internal server error" });
+        return result.secure_url;
+    } catch (error) {
+        console.error("Error uploading to Cloudinary:", error);
+        throw new Error("File upload failed");
     }
 };
 
-const blogCloud = async (req, res, next) => {
-    const image = path.join(__dirname, `../uploads/blogs/${req.body.title}_blog`);
-    await uploadToCloudinary(image, `${req.body.title}_blog`, req, res, next);
+const handleCloudinaryUpload = async (req, res, next, filePath, publicId) => {
+    try {
+        const secureUrl = await uploadToCloudinary(filePath, publicId);
+        if (secureUrl) {
+            req.body.img = secureUrl;
+            await fs.unlink(filePath);
+            next();
+        } else {
+            next(createError(400, "File upload failed"));
+        }
+    } catch (error) {
+        console.error("Error handling Cloudinary upload:", error);
+        next(error);
+    }
 };
 
-const accountCloud = async (req, res, next) => {
-    const image = path.join(__dirname, `../uploads/avatars/${req.user.username || req.body.username}_pp`);
+const createCloudMiddleware = (subfolder, field) => async (req, res, next) => {
+    try {
+        req.body[field] = [];
 
-    await uploadToCloudinary(image, `${req.user.username || req.body.username}_pp`, req, res, next);
+        for (const name of req.fileNames) {
+            const image = path.join(__dirname, `../uploads/${subfolder}/${name}`);
+            const secureUrl = await uploadToCloudinary(image, name);
+
+            if (secureUrl) {
+                if(req.body.photos){
+                    req.body[field].push(secureUrl);
+                }else{
+                    req.body[field] = secureUrl;
+                }
+
+                await fs.unlink(image);
+            } else {
+                next(createError(400, "File upload failed"));
+            }
+        }
+
+        next();
+    } catch (error) {
+        console.error(`Error in ${subfolder}Cloud middleware:`, error);
+        next(error);
+    }
 };
 
-module.exports = { blogCloud, accountCloud };
+const blogCloud = createCloudMiddleware('blogs', 'img');
+const accountCloud = createCloudMiddleware('avatars', 'img');
+const tourCompanyCloud = createCloudMiddleware('logos', 'img');
+const hotelCloud = createCloudMiddleware('hotels', 'photos');
+const roomCloud = createCloudMiddleware('rooms', 'photos');
+
+module.exports = { blogCloud, accountCloud, hotelCloud, roomCloud, tourCompanyCloud };

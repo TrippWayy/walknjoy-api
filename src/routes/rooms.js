@@ -10,9 +10,11 @@ const {
 const {checkAdmin, checkLogin} = require("../utils/verifyToken");
 const {cronDiscount} = require("../middlewares/cronMiddleware");
 const Room = require("../model/Room");
+const {uploadRoom} = require("../middlewares/multer");
+const {roomCloud} = require("../middlewares/cloudinary");
 
 //CREATE
-router.post("/admin/:hotelID", checkAdmin, cronDiscount(Room), createRoom);
+router.post("/admin/:hotelID", checkAdmin, uploadRoom, roomCloud, cronDiscount(Room), createRoom);
 //UPDATE
 router.put("/availability/:id", updateRoomAvailability);
 router.put("/admin/:id", checkAdmin, updateRoom);

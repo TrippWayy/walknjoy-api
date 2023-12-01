@@ -7,7 +7,7 @@ const {uploadBlog} = require("../middlewares/multer");
 const {blogCloud} = require("../middlewares/cloudinary");
 
 // CREATE
-router.post("/admin", checkAdmin, cronNews, uploadBlog.single('img'), blogCloud, createBlog)
+router.post("/admin", checkAdmin, cronNews, uploadBlog, blogCloud, createBlog)
 router.delete("/admin/:blogID", checkAdmin, deleteBlog)
 
 // GET
