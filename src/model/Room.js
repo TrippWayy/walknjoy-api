@@ -13,6 +13,10 @@ const RoomSchema = new mongoose.Schema(
             type: Number,
             default: 0
         },
+        photos: {
+          type: [String],
+          default: []
+        },
         productType: {
             type: String,
             default: "Room"

@@ -1,28 +1,41 @@
 const multer = require('multer');
 const path = require('path');
 
-const generateFileName = (req, file, cb) => {
-    let username = req.user ? req.user.username : req.body.username;
-    let blogTitle = req.body.tile
-    let prefix = req.route.path === '/blog' ? "blog" : 'pp';
-    cb(null, `${blogTitle ? blogTitle : username}_${prefix}`);
+const generateFileName = (file, suffix, prefix) => {
+    const image = path.parse(file.originalname);
+    return `${suffix}_${prefix}_${image.name}_${Date.now()}`;
 };
 
-const blogStorage = multer.diskStorage({
+const createStorage = (subfolder, fileNamePrefix) => multer.diskStorage({
     destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, "../uploads/blogs"));
+        cb(null, path.join(__dirname, `../uploads/${subfolder}`));
     },
-    filename: generateFileName
+    filename: (req, file, cb) => {
+        const uniqueFilename = generateFileName(file, fileNamePrefix, subfolder);
+        req.fileNames = req.fileNames || [];
+        req.fileNames.push(uniqueFilename);
+        cb(null, uniqueFilename);
+    }
 });
 
-const accountStorage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, path.join(__dirname, "../uploads/avatars"));
-    },
-    filename: generateFileName
-});
+const uploadBlog = multer({storage: createStorage('blogs', 'blog')}).single('img');
+const uploadAccount = multer({storage: createStorage('avatars', 'pp')}).single('img');
+const uploadHotel = multer({storage: createStorage('hotels', 'hotel')}).array('photos', 5);
+const uploadRoom = multer({storage: createStorage('rooms', 'room')}).array('photos', 5);
+const uploadTourCompany = multer({storage: createStorage("logos", "logo")}).single("logo")
+const uploadTour = multer({storage: createStorage("tours", "tour")}).array("photos")
+const uploadRentalCar = multer({storage: createStorage("logos", "logo")}).single("logo")
+const uploadCar = multer({storage: createStorage("cars", "car")}).array("photos", 5)
+const uploadEntertainment = multer({storage: createStorage("entertainments", "entertainment")}).array("photos", 5)
 
-const uploadBlog = multer({ storage: blogStorage });
-const uploadAccount = multer({ storage: accountStorage });
-
-module.exports = { uploadBlog, uploadAccount };
+module.exports = {
+    uploadBlog,
+    uploadAccount,
+    uploadHotel,
+    uploadRoom,
+    uploadTourCompany,
+    uploadTour,
+    uploadRentalCar,
+    uploadCar,
+    uploadEntertainment
+};

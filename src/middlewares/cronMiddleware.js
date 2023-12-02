@@ -1,7 +1,4 @@
 const Blog = require('../model/Blog');
-const Car = require("../model/Car");
-const Room = require("../model/Room");
-const Tour = require("../model/Tour")
 const send = require("../utils/sendEmail");
 const User = require("../model/User");
 const cron = require("node-cron");
@@ -29,7 +26,6 @@ const sendEmailOnChange = () => {
 const sendEmailOnDiscount = (product) => {
         product.watch().on('change', async (change) => {
             if (change.operationType === "insert") {
-                console.log("Gelib burani gordu")
                 const users = await User.find({isSubscriber: true});
                 const newProduct = change.fullDocument;
                 if (newProduct.percent !== 0) {

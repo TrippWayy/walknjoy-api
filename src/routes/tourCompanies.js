@@ -10,9 +10,11 @@ const {
     addReview,
     getReviews
 } = require("../controllers/tourCompany")
+const {uploadTourCompany} = require("../middlewares/multer");
+const {tourCompanyCloud} = require("../middlewares/cloudinary");
 
 // CREATE
-router.post("/admin/", checkAdmin, createCompany)
+router.post("/admin", uploadTourCompany, tourCompanyCloud, checkAdmin, createCompany)
 // UPDATE
 router.put("/admin/:id", checkAdmin, updateCompany)
 // DELETE

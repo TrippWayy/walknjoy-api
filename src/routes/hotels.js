@@ -12,9 +12,11 @@ const {
     getReviews
 } = require("../controllers/hotel.js");
 const {checkAdmin, checkLogin} = require("../utils/verifyToken")
+const {uploadHotel} = require("../middlewares/multer");
+const {hotelCloud} = require("../middlewares/cloudinary");
 
 //CREATE
-router.post("/admin", checkAdmin, createHotel);
+router.post("/admin", checkAdmin, uploadHotel, hotelCloud, createHotel);
 //UPDATE
 router.put("/admin/:id", checkAdmin, updateHotel);
 //DELETE

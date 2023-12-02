@@ -9,7 +9,8 @@ const HotelSchema = new mongoose.Schema({
         require: true,
     },
     logo: {
-        type: String
+        type: String,
+        default: "none",
     },
     city: {
         type: String,
