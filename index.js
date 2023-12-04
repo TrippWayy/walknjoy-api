@@ -24,6 +24,7 @@ const entertainmentRoute = require("./src/routes/entertainment")
 const employeesRoute = require("./src/routes/employees")
 const blogRoute = require("./src/routes/blog")
 const generalProductRoute = require("./src/routes/generalProduct")
+const recommendationRoute = require("./src/routes/recommendation")
 
 const app = express()
 dotenv.config()
@@ -94,11 +95,12 @@ app.use("/api/entertainments", entertainmentRoute)
 // app.use("/api/employees", employeesRoute)
 app.use("/api/blogs", blogRoute)
 app.use("/api/general/products", generalProductRoute)
+app.use("/api/recommendations", recommendationRoute)
 
 // Middleware for possible errors
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;
-    const errorMessage = err.message || "Something went wrong!";
+    const errorMessage = err.error || "Something went wrong!";
     return res.status(errorStatus).json({
         status: errorStatus,
         error: errorMessage,

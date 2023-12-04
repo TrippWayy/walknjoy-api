@@ -3,8 +3,10 @@ const TourCompany = require("../model/TourCompany");
 const Blog = require("../model/Blog");
 const UserInteraction = require("../model/UserInteraction")
 const Hotel = require("../model/Hotel");
+const RentalCar = require("../model/RentalCar");
 
 exports.getItem = async (Model, req, res, next) => {
+    console.log("Bura gelir")
   try {
     const item = await Model.findById(req.params.id);
     const userIdentifier = req.cookies['uniqueViewer'];
@@ -59,7 +61,7 @@ exports.getItem = async (Model, req, res, next) => {
 
 
 exports.getItems = async (Model, req, res, next) => {
-    if (Model === Blog || Model === TourCompany) {
+    if (Model === Blog || Model === TourCompany || Model === RentalCar) {
         try {
             const items = await Model.find({})
             res.status(200).json(items)

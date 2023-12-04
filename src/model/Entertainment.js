@@ -22,7 +22,7 @@ const EntertainmentSchema = new mongoose.Schema({
     },
     productType: {
         type: String,
-        default: "Enterrainment"
+        default: "Entertainment"
     },
     startDate: {
         type: Date,
