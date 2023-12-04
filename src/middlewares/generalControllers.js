@@ -6,7 +6,6 @@ const Hotel = require("../model/Hotel");
 const RentalCar = require("../model/RentalCar");
 
 exports.getItem = async (Model, req, res, next) => {
-    console.log("Bura gelir")
   try {
     const item = await Model.findById(req.params.id);
     const userIdentifier = req.cookies['uniqueViewer'];
