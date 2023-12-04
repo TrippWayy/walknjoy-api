@@ -4,6 +4,7 @@ const Car = require("../model/Car");
 const Entertainment = require("../model/Entertainment")
 const RentalCar = require("../model/RentalCar");
 const TourCompany = require("../model/TourCompany");
+const Room = require("../model/Room");
 
 const countByCity = async (req, res, next) => {
     try {
@@ -35,12 +36,16 @@ const countByCity = async (req, res, next) => {
     }
 };
 
-const getCompanyData = async (req, res, next) => {
+const getModelData = async (req, res, next) => {
     try {
         const models = {
-            Hotel: Hotel,
-            TourCompany: TourCompany,
-            RentalCar: RentalCar,
+            Hotel,
+            Room,
+            TourCompany,
+            Tour,
+            RentalCar,
+            Car,
+            Entertainment
         };
 
         const companiesData = {};
@@ -68,9 +73,13 @@ const getCompanyData = async (req, res, next) => {
 const getFields = async (req, res, next) => {
     try {
         const models = {
-            Hotel: Hotel,
-            TourCompany: TourCompany,
-            RentalCar: RentalCar,
+            Hotel,
+            Room,
+            TourCompany,
+            Tour,
+            RentalCar,
+            Car,
+            Entertainment
         };
 
         const companiesData = {};
@@ -92,4 +101,4 @@ const getFields = async (req, res, next) => {
 
 
 
-module.exports = {countByCity, getCompanyData, getFields};
+module.exports = {countByCity, getModelData, getFields};

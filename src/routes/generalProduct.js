@@ -1,8 +1,9 @@
 const router = require('express').Router()
-const {countByCity, getCompanyData, getFields} = require("../controllers/generalProduct")
+const {countByCity, getModelData, getFields} = require("../controllers/generalProduct")
+const {checkAdmin} = require("../utils/verifyToken");
 
 router.get("/countByCity", countByCity)
-router.get("/all/companies", getCompanyData)
-router.get("/product/fields", getFields)
+router.get("/all/models", checkAdmin, getModelData)
+router.get("/models/fields", checkAdmin, getFields)
 
 module.exports = router;

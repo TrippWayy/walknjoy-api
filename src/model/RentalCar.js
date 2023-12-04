@@ -20,7 +20,7 @@ const RentalCarSchema = new mongoose.Schema({
     },
     productType: {
         type: String,
-        default: "CarRental"
+        default: "RentalCar"
     },
     viewedUsers: [String],
     cars: {
@@ -41,8 +41,8 @@ const RentalCarSchema = new mongoose.Schema({
             },
         },
     ],
-}, {timestamps: true, collection: "CarRental"})
+}, {timestamps: true, collection: "RentalCar"})
 
-const RentalCar = mongoose.model("CarRental", RentalCarSchema)
+const RentalCar = mongoose.model("RentalCar", RentalCarSchema)
 
 module.exports = RentalCar;
