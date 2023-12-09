@@ -1,9 +1,6 @@
 const router = require("express").Router();
-const {checkAdmin, checkLogin} = require("../utils/verifyToken")
+const {checkLogin} = require("../utils/verifyToken")
 const {
-    createTour,
-    updateTour,
-    deleteTour,
     getTour,
     updateTourAvailability,
     getTours,
@@ -13,18 +10,8 @@ const {
 } = require("../controllers/tour")
 const {getReviews} = require("../controllers/tour");
 const {addReview} = require("../controllers/tour");
-const {cronDiscount} = require("../middlewares/cronMiddleware");
-const Tour = require("../model/Tour");
-const {uploadTour} = require("../middlewares/multer");
-const {tourCloud} = require("../middlewares/cloudinary");
 
 
-// CREATE
-router.post("/admin/:companyID", uploadTour, tourCloud, checkAdmin, cronDiscount(Tour), createTour)
-// UPDATE
-router.put("/admin/:id", checkAdmin, updateTour)
-// DELETE
-router.delete("/admin/:id/:companyid", checkAdmin, deleteTour)
 router.put("/availability/:id", updateTourAvailability)
 // GET
 router.get("/find/:id", getTour)

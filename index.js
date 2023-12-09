@@ -25,6 +25,7 @@ const employeesRoute = require("./src/routes/employees")
 const blogRoute = require("./src/routes/blog")
 const generalProductRoute = require("./src/routes/generalProduct")
 const recommendationRoute = require("./src/routes/recommendation")
+const paymentRoute = require("./src/routes/payment")
 
 const app = express()
 dotenv.config()
@@ -82,21 +83,21 @@ app.set('views', __dirname + '/src/views');
 app.use(express.static('public'));
 
 // Routers
-app.use("/api/auth", authRoute)
-app.use("/api/verify", verifyRoute)
-app.use("/api/users", usersRoute)
-app.use("/api/hotels", hotelsRoute);
-app.use("/api/rooms", roomsRoute);
-app.use("/api/tours", tourRoute);
-app.use("/api/tour-companies", tourCompaniesRoute)
-app.use("/api/rental-car", rentalCarRoute)
-app.use("/api/cars", carRoute)
-app.use("/api/entertainments", entertainmentRoute)
-// app.use("/api/employees", employeesRoute)
-app.use("/api/blogs", blogRoute)
-app.use("/api/general/products", generalProductRoute)
-app.use("/api/recommendations", recommendationRoute)
-
+app.use("/api/v1/auth", authRoute)
+app.use("/api/v1/verify", verifyRoute)
+app.use("/api/v1/users", usersRoute)
+app.use("/api/v1/hotels", hotelsRoute);
+app.use("/api/v1/rooms", roomsRoute);
+app.use("/api/v1/tours", tourRoute);
+app.use("/api/v1/tour-companies", tourCompaniesRoute)
+app.use("/api/v1/rental-car", rentalCarRoute)
+app.use("/api/v1/cars", carRoute)
+app.use("/api/v1/entertainments", entertainmentRoute)
+// app.use("/api/v1/employees", employeesRoute)
+app.use("/api/v1/blogs", blogRoute)
+app.use("/api/v1/general/products", generalProductRoute)
+app.use("/api/v1/recommendations", recommendationRoute)
+app.use("/api/v1/payment", paymentRoute)
 // Middleware for possible errors
 app.use((err, req, res, next) => {
     const errorStatus = err.status || 500;

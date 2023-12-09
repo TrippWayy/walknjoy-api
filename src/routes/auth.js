@@ -17,7 +17,7 @@ const {accountCloud} = require("../middlewares/cloudinary");
 
 router.post("/register", checkUnLogin, uploadAccount, accountCloud, register)
 router.post("/login", checkUnLogin, login)
-router.post("/admin/login", checkUnLogin, checkAdminLogin, login)
+    router.post("/admin/login", checkUnLogin, checkAdminLogin, login)
 router.post("/logout", checkLogin, logout)
 router.post("/forgot-password", checkUnLogin, forgetPassword)
 router.post("/user/reset-password", checkUnLogin, resetPassword)
