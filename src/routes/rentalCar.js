@@ -1,9 +1,6 @@
 const router = require("express").Router()
-const {checkAdmin, checkLogin} = require("../utils/verifyToken")
+const {checkLogin} = require("../utils/verifyToken")
 const {
-    createRental,
-    updateRental,
-    deleteRental,
     getRental,
     getRentals,
     addReview,
@@ -11,15 +8,7 @@ const {
     getRentalCars,
     countByCity
 } = require("../controllers/rentalCar")
-const {uploadRentalCar} = require("../middlewares/multer");
-const {rentalCarCloud} = require("../middlewares/cloudinary");
 
-//CREATE
-router.post("/admin/", checkAdmin, uploadRentalCar, rentalCarCloud, createRental);
-//UPDATE
-router.put("/admin/:id", checkAdmin, updateRental);
-//DELETE
-router.delete("/admin/:id", checkAdmin, deleteRental);
 //GET
 router.get("/find/:id", getRental);
 //GET ALL

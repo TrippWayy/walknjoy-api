@@ -2,25 +2,15 @@ const router = require("express").Router();
 const {
     countByCity,
     countByType,
-    createHotel,
-    deleteHotel,
     getHotel,
     getHotelRooms,
     getHotels,
-    updateHotel,
     addReview,
     getReviews
 } = require("../controllers/hotel.js");
-const {checkAdmin, checkLogin} = require("../utils/verifyToken")
-const {uploadHotel} = require("../middlewares/multer");
-const {hotelCloud} = require("../middlewares/cloudinary");
+const {checkLogin} = require("../utils/verifyToken")
 
-//CREATE
-router.post("/admin", checkAdmin, uploadHotel, hotelCloud, createHotel);
-//UPDATE
-router.put("/admin/:id", checkAdmin, updateHotel);
-//DELETE
-router.delete("/admin/:id", checkAdmin, deleteHotel);
+
 //GET
 router.get("/find/:id", getHotel);
 //GET ALL

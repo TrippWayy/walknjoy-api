@@ -67,24 +67,8 @@ const createCloudMiddleware = (subfolder, field) => async (req, res, next) => {
     }
 };
 
-const blogCloud = createCloudMiddleware('blogs', 'img');
 const accountCloud = createCloudMiddleware('avatars', 'img');
-const tourCompanyCloud = createCloudMiddleware('logos', 'logo');
-const hotelCloud = createCloudMiddleware('hotels', 'photos');
-const roomCloud = createCloudMiddleware('rooms', 'photos');
-const tourCloud = createCloudMiddleware("tours", "photos")
-const rentalCarCloud = createCloudMiddleware("logos", "logo")
-const carCloud = createCloudMiddleware("cars", "photos")
-const entertainmentCloud = createCloudMiddleware("entertainments", "photos")
 
 module.exports = {
-    blogCloud,
     accountCloud,
-    hotelCloud,
-    roomCloud,
-    tourCompanyCloud,
-    tourCloud,
-    rentalCarCloud,
-    carCloud,
-    entertainmentCloud
 };

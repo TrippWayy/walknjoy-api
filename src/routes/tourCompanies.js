@@ -1,24 +1,13 @@
 const router = require("express").Router()
-const {checkAdmin, checkLogin} = require("../utils/verifyToken")
+const {checkLogin} = require("../utils/verifyToken")
 const {
-    createCompany,
-    updateCompany,
-    deleteCompany,
     getCompany,
     getCompanies,
     getCompanyTours,
     addReview,
     getReviews
 } = require("../controllers/tourCompany")
-const {uploadTourCompany} = require("../middlewares/multer");
-const {tourCompanyCloud} = require("../middlewares/cloudinary");
 
-// CREATE
-router.post("/admin", uploadTourCompany, tourCompanyCloud, checkAdmin, createCompany)
-// UPDATE
-router.put("/admin/:id", checkAdmin, updateCompany)
-// DELETE
-router.delete("/admin/:id", checkAdmin, deleteCompany)
 // GET
 router.get("/find/:id", getCompany)
 // GET ALL
